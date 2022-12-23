@@ -1,6 +1,5 @@
 import { readFileSync } from 'fs';
 import { Movie } from '../../types/movie.type.js';
-// import { OfferType } from '../../types/offer-type.enum.js';
 import { FileReaderInterface } from './file-reader.interface.js';
 
 export default class TSVFileReader implements FileReaderInterface {
@@ -42,7 +41,6 @@ export default class TSVFileReader implements FileReaderInterface {
         poster,
         backgroungImage,
         backgroungColor
-
       }));
   }
 }

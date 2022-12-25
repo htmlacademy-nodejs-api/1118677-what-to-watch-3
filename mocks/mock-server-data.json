@@ -1,0 +1,126 @@
+{
+  "api": {
+    "titles": [
+      "Зелёная миля",
+      "Форрест Гамп",
+      "Криминальное чтиво",
+      "В бой идут одни старики",
+      "Пролетая над гнездом кукушки"
+    ],
+    "descriptions": [
+      "Страшный рассказ о драконе. Колдовство, предательство и необыкновенный мир фэнтези.",
+      "История про вампиров из маленького городка. Коварство, нестандартный сюжет и необыкновенные приключения священника.",
+      "Идти или остановиться? Вопрос без правильного ответа. Рассказ о долгой и смертельной прогулке.",
+      "Как похудеть и не сойти с ума? А как вернуть вес обратно? Необычная история противостояния.",
+      "Прими звонок и превратись в зомби. Рассказ о зомбировании через средства связи.",
+      "Виновен или нет? Какая разница. Исход один. Сверхспособности не помогут.",
+      "И у машин есть душа. Хорошо ли это? Мистический рассказ про автомобиль.",
+      "Криминальная сага от неповторимого Марио Пьюзо. Перестрелки, погони, предательство и дружба.",
+      "Мир населяют не только люди. Иные живут вместе с ними и визуально ничем не отличаются. История про магию и могущественных существ. Борьба сил Добра и Зла."
+    ],
+
+    "genres": [
+      "comedy",
+      "crime",
+      "documentary",
+      "drama",
+      "horror",
+      "family",
+      "romance",
+      "scifi",
+      "thriller"
+    ],
+
+    "previewVideos": [
+      "previewVideo.avi",
+      "previewVideo1.avi",
+      "previewVideo2.avi",
+      "previewVideo3.avi",
+      "previewVideo4.avi",
+      "previewVideo5.avi"
+    ],
+    "videos": [
+      "video.avi",
+      "video1.avi",
+      "video2.avi",
+      "video3.avi",
+      "video4.avi",
+      "video5.avi"
+    ],
+    "actors": [
+      "Майкл Кларк",
+      "Том Хэнкс",
+      "Робин Райт",
+      "Квентин Тарантино",
+      "Джон Траволта",
+      "Ума Турман",
+      "Джек Николсон",
+      "Дэнни де Вито",
+      "Леонид Быков"
+    ],
+    "directors": [
+      "Фрэнк Дарабонт",
+      "Роберт Земекис",
+      "Милош Форман",
+      "Квентин Тарантино",
+      "Джек Николсон",
+      "Леонид Быков"
+    ],
+
+    "users": [
+      "Иван",
+      "Олег",
+      "Пьер",
+      "Роланд",
+      "Холи",
+      "Джек",
+      "Антон",
+      "Борис",
+      "Рокки",
+      "Джон"
+    ],
+    "emails": [
+      "snow@pisem.local",
+      "president@dka.local",
+      "fish@big.local",
+      "test@pisem.local",
+      "freedom@pisem.local",
+      "rolan@pochta.local",
+      "author@mir.local",
+      "test@lost.loca",
+      "kujo-fan@story.local"
+    ],
+    "avatars": [
+      "user.jpg",
+      "photo.jpg",
+      "awesome-avatar.jpg",
+      "roland.jpg",
+      "smit.jpg",
+      "coffee.jpg"
+    ],
+    "posters": [
+      "poster.jpg",
+      "poster1.jpg",
+      "poster2.jpg",
+      "poster3.jpg",
+      "poster4.jpg",
+      "poster5.jpg"
+    ],
+    "backgroungImages": [
+      "backgroungImage.jpg",
+      "backgroungImage1.jpg",
+      "backgroungImage2.jpg",
+      "backgroungImage3.jpg",
+      "backgroungImage4.jpg",
+      "backgroungImage5.jpg"
+    ],
+    "backgroungColors": [
+      "backgroungColor.jpg",
+      "backgroungColor1.jpg",
+      "backgroungColor2.jpg",
+      "backgroungColor3.jpg",
+      "backgroungColor4.jpg",
+      "backgroungColor5.jpg"
+    ]
+  }
+}

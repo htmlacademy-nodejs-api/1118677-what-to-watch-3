@@ -1,0 +1,515 @@
+openapi: 3.0.2
+info:
+  title: API сервер для демо-проекта «Что посмотреть».
+  description: |-
+    * Список ресурсов и маршрутов сервера «Что посмотреть».
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 2.0.0
+tags:
+  - name: movies
+    description: Действия с фильмами.
+  - name: watchlist
+    description: Действия со списком просмотров.
+  - name: comments
+    description: Действия с комментариями.
+  - name: users
+    description: Действия с пользователем.
+
+paths:
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Регистрация пользователя
+      description: Регистрирует нового пользователя.
+      requestBody:
+        description: Информация для создания нового пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createUser"
+        required: true
+      responses:
+        "201":
+          description: Пользователь зарегистрирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        "409":
+          description: Пользователь с таким email уже существует.
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Авторизация пользователя
+      description: Авторизует пользователя на основе логина и пароля
+      requestBody:
+        description: Информация для авторизации пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/authUser"
+        required: true
+      responses:
+        "200":
+          description: Пользователь авторизован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        "400":
+          description: Ошибка запроса.
+        "401":
+          description: Пользователь не авторизован.
+
+    get:
+      tags:
+        - users
+      summary: Проверка состояния пользователя
+      description: Возвращает состояние о авторизованном пользователе
+      responses:
+        "200":
+          description: Статус пользователя. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        "401":
+          description: Пользователь не авторизован.
+
+  /users/{userId}/avatar:
+    post:
+      tags:
+        - users
+      summary: Загрузить изображение аватара
+      description: Загружает изображение аватара пользователя. Изображение
+        аватара должно быть в формате `png` или `jpg`.
+
+      responses:
+        "201":
+          description: Пользователь изменен. Объект пользователя.
+
+        "400":
+          description: Некорректный формат изображения
+
+        "404":
+          description: Пользователь с таким логином не существует.
+
+  /movies:
+    get:
+      tags:
+        - movies
+      summary: Получить список фильмов
+      description: Возвращает массив фильмов
+      responses:
+        "200":
+          description: Список фильмов. Массив с объектами фильмов.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/movie"
+    post:
+      tags:
+        - movies
+      summary: Добавить фильм
+      description: Добавляет новый фильм
+      requestBody:
+        description: Информация для добавления фильма.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createMovie"
+        required: true
+      responses:
+        "201":
+          description: Фильм добавлен. Объект фильма.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/movie"
+        "400":
+          description: Ошибка запроса.
+        "401":
+          description: Пользователь не авторизован.
+
+  /movies/genre/{genre}:
+    parameters:
+    - name: genre
+      in: path
+      description: Жанр фильма
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+        - movies
+      summary: Получить список фильмов по жанру
+      description: Возвращает массив фильмов по определенному жанру
+      responses:
+        "200":
+          description: Список фильмов по жанру. Массив с объектами фильмов.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/movie"
+
+  /movies/{movieId}:
+    parameters:
+    - name: movieId
+      in: path
+      description: Уникальный идентификатор фильма
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+        - movies
+      summary: Получить информацию о фильме
+      description: Возвращает детальную информацию по фильму
+      responses:
+        "200":
+          description: Детальная информация о фильме. Объект фильма.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/movie"
+        "404":
+          description: Фильм не найден.
+    patch:
+      tags:
+        - movies
+      summary: Обновить информацию о фильме
+      description: Возвращает обновленную информацию по фильму
+      requestBody:
+        description: Информация для обновления фильма.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createMovie"
+        required: true
+      responses:
+        "201":
+          description: Фильм обновлен. Объект фильма.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/movie"
+        "401":
+          description: Пользователь не авторизован.
+        "404":
+          description: Фильм не найден.
+    delete:
+      tags:
+        - movies
+      summary: Удаляет информацию о фильме
+      description: Удаляет информацию о фильме по указанному movieId
+      responses:
+        "204":
+          description: Фильм удален.
+        "401":
+          description: Пользователь не авторизован.
+        "404":
+          description: Фильм не найден.
+
+  /movies/promo:
+    get:
+      tags:
+        - movies
+      summary: Получить информацию о промо-фильме
+      description: Возвращает детальную информацию о промо-фильме
+      responses:
+        "200":
+          description: Детальная информация о промо-фильме. Объект фильма.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/movie"
+
+  /watchlist:
+    get:
+      tags:
+        - watchlist
+      summary: Получить список фильмов «К просмотру».
+      description: Возвращает массив фильмов «К просмотру».
+      responses:
+        "200":
+          description: Список фильмов «К просмотру». Массив с объектами фильмов.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/movie"
+        "401":
+          description: Пользователь не авторизован.
+
+  /watchlist/{movieId}:
+    parameters:
+    - name: movieId
+      in: path
+      description: Уникальный идентификатор фильма
+      required: true
+      schema:
+        type: string
+    post:
+      tags:
+        - watchlist
+      summary: Добавляет фильм в список «К просмотру»
+      description: Добавляет фильм в список «К просмотру» по идентификатору фильма.
+      responses:
+        "200":
+          description: Фильм добавлен в список. Объект фильма.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/movie"
+        "400":
+          description: Ошибка запроса.
+        "401":
+          description: Пользователь не авторизован.
+    delete:
+      tags:
+        - watchlist
+      summary: Удаляет фильм в список «К просмотру»
+      description: Удаляет фильм в список «К просмотру» по идентификатору фильма.
+      responses:
+        "204":
+          description: Фильм удален из списка «К просмотру».
+        "400":
+          description: Ошибка запроса.
+        "401":
+          description: Пользователь не авторизован.
+
+  /comments/{movieId}:
+    parameters:
+    - name: movieId
+      in: path
+      description: Уникальный идентификатор фильма
+      required: true
+      schema:
+        type: string
+    post:
+      tags:
+        - comments
+      summary: Добавить комментарий к фильму
+      description: Добавляет комментарий к фильму по переданному идентификатору
+      requestBody:
+        description: Информация для добавления комментария.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createComment"
+        required: true
+      responses:
+        "201":
+          description: Комментарий добавлен. Объект комментария.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/comment"
+        "400":
+          description: Ошибка запроса.
+        "401":
+          description: Пользователь не авторизован.
+    get:
+      tags:
+        - comments
+      summary: Получить список комментариев к фильму
+      description: Возвращает список комментариев к фильму по переданному идентификатору
+      responses:
+        "200":
+          description: Список комментариев. Массив с объектами комментариев.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/comment"
+        "404":
+          description: Фильм не найден.
+
+
+components:
+  schemas:
+    createUser:
+      type: object
+      properties:
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+        firstname:
+          type: string
+          example: Keks
+        lastname:
+          type: string
+          example: Cat
+        password:
+          type: string
+          example: 123456
+    user:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+    authUser:
+      type: object
+      properties:
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+        password:
+          type: string
+          example: 123456
+
+    movie:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+        name:
+          type: string
+          example: Пролетая над гнездом кукушки
+        description:
+          type: string
+          example: Идти или остановиться? Вопрос без правильного ответа. Рассказ о долгой и смертельной прогулке.
+        publictionDate:
+          type: string
+          example: 2022-02-16T15:13:41.834Z
+        genre:
+          type: array
+          example: [horror, comedy]
+        released:
+          type: number
+          example: 2000
+        rating:
+          type: number
+          example: 5
+        previewVideoImage:
+          type: string
+          example: img/movie/preview-video-image.jpg
+        previewVideoLink:
+          type: string
+          example: https://some-link
+        starring:
+          type: array
+          example: [Том Хэнкс, Джек Николсон]
+        director:
+          type: string
+          example: Квентин Тарантино
+        runTime:
+          type: number
+          example: 40
+        commentCount:
+          type: number
+          example: 10
+        posterImage:
+          type: string
+          example: img/movie/poster-image.jpg
+        backgroundImage:
+          type: string
+          example: img/movie/background-image.jpg
+        backgroundColor:
+          type: string
+          example: '#EBC996'
+        isPromo:
+          type: boolean
+          example: false
+        iswWatchlist:
+          type: boolean
+          example: false
+        user:
+          $ref: "#/components/schemas/user"
+
+    createMovie:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Пролетая над гнездом кукушки
+        description:
+          type: string
+          example: Идти или остановиться? Вопрос без правильного ответа. Рассказ о долгой и смертельной прогулке.
+        publictionDate:
+          type: string
+          example: 2022-02-16T15:13:41.834Z
+        genre:
+          type: array
+          example: [horror, comedy]
+        released:
+          type: number
+          example: 2000
+        rating:
+          type: number
+          example: 5
+        previewVideoImage:
+          type: string
+          example: img/movie/preview-video-image.jpg
+        previewVideoLink:
+          type: string
+          example: https://some-link
+        starring:
+          type: array
+          example: [Том Хэнкс, ]
+        director:
+          type: string
+          example: Квентин Тарантино
+        runTime:
+          type: number
+          example: 40
+        commentCount:
+          type: number
+          example: 10
+        posterImage:
+          type: string
+          example: img/movie/poster-image.jpg
+        backgroundImage:
+          type: string
+          example: img/movie/background-image.jpg
+        backgroundColor:
+          type: string
+          example: '#EBC996'
+        isPromo:
+          type: boolean
+          example: false
+
+    comment:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+        text:
+          type: string
+          example: Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        rating:
+          type: number
+          example: 2
+        date:
+          type: string
+          example: 2022-02-16T15:13:41.834Z
+        user:
+          $ref: "#/components/schemas/user"
+
+    createComment:
+      type: object
+      properties:
+        text:
+          type: string
+          example: Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        rating:
+          type: number
+          example: 2

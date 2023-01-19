@@ -146,6 +146,7 @@ paths:
       required: true
       schema:
         type: string
+        example: 633041890aa1e923453c2957
     get:
       tags:
         - movies
@@ -169,6 +170,7 @@ paths:
       required: true
       schema:
         type: string
+        example: 633041890aa1e923453c2957
     get:
       tags:
         - movies
@@ -239,6 +241,16 @@ paths:
         - watchlist
       summary: Получить список фильмов «К просмотру».
       description: Возвращает массив фильмов «К просмотру».
+
+      parameters:
+        - name: count
+          in: query
+          description: Кол-во фильмов.
+          required: false
+          schema:
+            type: number
+            example: 100
+
       responses:
         "200":
           description: Список фильмов «К просмотру». Массив с объектами фильмов.
@@ -247,23 +259,37 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/movie"
+                  type: object
+                  allOf:
+                   - $ref: "#/components/schemas/movie"
+                   - type: object
         "401":
           description: Пользователь не авторизован.
 
   /watchlist/{movieId}:
-    parameters:
-    - name: movieId
-      in: path
-      description: Уникальный идентификатор фильма
-      required: true
-      schema:
-        type: string
     post:
       tags:
         - watchlist
       summary: Добавляет фильм в список «К просмотру»
       description: Добавляет фильм в список «К просмотру» по идентификатору фильма.
+
+      parameters:
+          - name: movieId
+            in: path
+            description: Уникальный идентификатор фильма
+            required: true
+            schema:
+              type: string
+              example: 633041890aa1e923453c2957
+
+          - name: action
+            in: query
+            description: 1 - add / 0 - remove
+            required: true
+            schema:
+              type: number
+              example: 1
+
       responses:
         "200":
           description: Фильм добавлен в список. Объект фильма.
@@ -275,32 +301,22 @@ paths:
           description: Ошибка запроса.
         "401":
           description: Пользователь не авторизован.
-    delete:
-      tags:
-        - watchlist
-      summary: Удаляет фильм в список «К просмотру»
-      description: Удаляет фильм в список «К просмотру» по идентификатору фильма.
-      responses:
-        "204":
-          description: Фильм удален из списка «К просмотру».
-        "400":
-          description: Ошибка запроса.
-        "401":
-          description: Пользователь не авторизован.
 
   /comments/{movieId}:
-    parameters:
-    - name: movieId
-      in: path
-      description: Уникальный идентификатор фильма
-      required: true
-      schema:
-        type: string
     post:
       tags:
         - comments
       summary: Добавить комментарий к фильму
       description: Добавляет комментарий к фильму по переданному идентификатору
+
+      parameters:
+      - name: movieId
+        in: path
+        description: Уникальный идентификатор фильма
+        required: true
+        schema:
+          type: string
+
       requestBody:
         description: Информация для добавления комментария.
         content:
@@ -324,6 +340,16 @@ paths:
         - comments
       summary: Получить список комментариев к фильму
       description: Возвращает список комментариев к фильму по переданному идентификатору
+
+      parameters:
+        - name: movieId
+          in: path
+          description: Уникальный идентификатор фильма
+          required: true
+          schema:
+            type: string
+            example: 633041890aa1e923453c2957
+
       responses:
         "200":
           description: Список комментариев. Массив с объектами комментариев.
@@ -332,7 +358,10 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/comment"
+                  type: object
+                  allOf:
+                   - $ref: "#/components/schemas/comment"
+                   - type: object
         "404":
           description: Фильм не найден.
 
@@ -380,37 +409,37 @@ components:
         id:
           type: string
           example: 6329c3d6a04ab1061c6425ea
-        name:
+        title:
           type: string
           example: Пролетая над гнездом кукушки
         description:
           type: string
           example: Идти или остановиться? Вопрос без правильного ответа. Рассказ о долгой и смертельной прогулке.
-        publictionDate:
+        postDate:
           type: string
           example: 2022-02-16T15:13:41.834Z
         genre:
           type: array
           example: [horror, comedy]
-        released:
+        releaseDate:
           type: number
           example: 2000
         rating:
           type: number
           example: 5
-        previewVideoImage:
+        previewVideo:
           type: string
           example: img/movie/preview-video-image.jpg
-        previewVideoLink:
+        video:
           type: string
           example: https://some-link
-        starring:
+        actors:
           type: array
           example: [Том Хэнкс, Джек Николсон]
         director:
           type: string
           example: Квентин Тарантино
-        runTime:
+        duration:
           type: number
           example: 40
         commentCount:
@@ -437,37 +466,37 @@ components:
     createMovie:
       type: object
       properties:
-        name:
+        title:
           type: string
           example: Пролетая над гнездом кукушки
         description:
           type: string
           example: Идти или остановиться? Вопрос без правильного ответа. Рассказ о долгой и смертельной прогулке.
-        publictionDate:
+        postDate:
           type: string
           example: 2022-02-16T15:13:41.834Z
         genre:
           type: array
           example: [horror, comedy]
-        released:
+        releaseDate:
           type: number
           example: 2000
         rating:
           type: number
           example: 5
-        previewVideoImage:
+        previewVideo:
           type: string
           example: img/movie/preview-video-image.jpg
-        previewVideoLink:
+        video:
           type: string
           example: https://some-link
-        starring:
+        actors:
           type: array
           example: [Том Хэнкс, ]
         director:
           type: string
           example: Квентин Тарантино
-        runTime:
+        duration:
           type: number
           example: 40
         commentCount:
@@ -498,11 +527,12 @@ components:
         rating:
           type: number
           example: 2
-        date:
+        postDate:
           type: string
           example: 2022-02-16T15:13:41.834Z
-        user:
-          $ref: "#/components/schemas/user"
+        userId:
+          type: string
+          example: 633041890aa1e923453c294c
 
     createComment:
       type: object
@@ -513,3 +543,12 @@ components:
         rating:
           type: number
           example: 2
+        postDate:
+          type: string
+          example: 2022-02-16T15:13:41.834Z
+        userId:
+          type: string
+          example: 633041890aa1e923453c294c
+        filmId:
+          type: string
+          example: 633041890aa1e923453c294c

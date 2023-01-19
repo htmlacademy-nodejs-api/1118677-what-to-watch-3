@@ -8,5 +8,7 @@ export const Component = {
   GenreServiceInterface: Symbol.for('GenreServiceInterface'),
   GenreModel: Symbol.for('GenreModel'),
   MovieServiceInterface: Symbol.for('MovieServiceInterface'),
-  MovieModel: Symbol.for('MovieModel')
+  MovieModel: Symbol.for('MovieModel'),
+  CommentServiceInterface: Symbol.for('CommentServiceInterface'),
+  CommentModel: Symbol.for('CommentModel')
 } as const;

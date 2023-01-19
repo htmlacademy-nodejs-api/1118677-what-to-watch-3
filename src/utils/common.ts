@@ -4,12 +4,12 @@ import { Movie } from '../types/movie.type.js';
 export const createMovie = (row: string) => {
   const tokens = row.replace('\n', '').split('\t');
   const [title, description, createdDate, genres, releaseDate, rating, previewVideo, video,
-    actors, director, duration, commentNumber, firstname, email, avatarPath, poster,
+    actors, director, duration, commentCount, firstname, email, avatarPath, posterImage,
     backgroungImage, backgroungColor] = tokens;
   return {
     title,
     description,
-    postDate: new Date(createdDate),
+    postDate: new Date(createdDate).toISOString(),
     genres: genres.split(';').map((name) => ({name})),
     releaseDate,
     rating: Number.parseInt(rating, 10),
@@ -18,9 +18,9 @@ export const createMovie = (row: string) => {
     actors: actors.split(';').map((name) => ({name})),
     director,
     duration: Number.parseInt(duration, 10),
-    commentNumber: Number.parseInt(commentNumber, 10),
+    commentCount: Number.parseInt(commentCount, 10),
     user: {firstname, email, avatarPath},
-    poster,
+    posterImage,
     backgroungImage,
     backgroungColor
   } as Movie;

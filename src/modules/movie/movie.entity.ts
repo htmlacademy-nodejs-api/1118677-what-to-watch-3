@@ -23,8 +23,8 @@ export class MovieEntity extends defaultClasses.TimeStamps {
   @prop({trim: true, required: true})
   public description!: string;
 
-  @prop()
-  public postDate!: Date;
+  @prop({ default: new Date().toISOString() })
+  public postDate!: string;
 
   @prop({
     ref: GenreEntity,
@@ -37,10 +37,10 @@ export class MovieEntity extends defaultClasses.TimeStamps {
   @prop({required: true})
   public releaseDate!: string;
 
-  @prop({required: true, default: 0})
+  @prop({default: 0})
   public rating!: number;
 
-  @prop({required: true})
+  @prop({default: ''})
   public previewVideo!: string;
 
   @prop({required: true})
@@ -64,14 +64,20 @@ export class MovieEntity extends defaultClasses.TimeStamps {
   })
   public userId!: Ref<UserEntity>;
 
-  @prop({required: true})
-  public poster!: string;
+  @prop({default: ''})
+  public posterImage!: string;
 
-  @prop({required: true})
+  @prop({default: ''})
   public backgroungImage!: string;
 
   @prop({required: true})
   public backgroungColor!: string;
+
+  @prop({default: false})
+  public isPromo!: boolean;
+
+  @prop({default: false})
+  public isFfvorite!: boolean;
 }
 
 export const MovieModel = getModelForClass(MovieEntity);

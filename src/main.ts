@@ -4,6 +4,7 @@ import {applicationContainer} from './app/application.container.js';
 import {userContainer} from './modules/user/user.container.js';
 import {genreContainer} from './modules/genre/genre.container.js';
 import {movieContainer} from './modules/movie/movie.container.js';
+import {commentContainer} from './modules/comment/comment.container.js';
 import Application from './app/application.js';
 import {Component} from './types/component.types.js';
 
@@ -11,7 +12,8 @@ const mainContainer = Container.merge(
   applicationContainer,
   userContainer,
   genreContainer,
-  movieContainer
+  movieContainer,
+  commentContainer
 );
 
 async function bootstrap() {

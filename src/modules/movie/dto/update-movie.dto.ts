@@ -7,12 +7,13 @@ export default class CreateMovieDto {
   public postDate!: string;
   public genres!: Genre[];
   public releaseDate!: string;
+  public rating!: number;
   public previewVideo!: string;
   public video!: string;
   public actors!: Actor[];
   public director!: string;
   public duration!: number;
-  public userId!: string;
+  public commentCount!: number;
   public posterImage!: string;
   public backgroungImage!: string;
   public backgroungColor!: string;

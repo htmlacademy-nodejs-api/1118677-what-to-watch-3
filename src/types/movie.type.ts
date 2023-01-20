@@ -5,7 +5,7 @@ import { User } from './user.type.js';
 export type Movie = {
    title: string;
    description: string;
-   postDate: Date;
+   postDate: string;
    genres: Genre[];
    releaseDate: string;
    rating: number;
@@ -14,9 +14,11 @@ export type Movie = {
    actors: Actor[];
    director: string;
    duration: number;
-   commentNumber: number;
+   commentCount: number;
    user: User;
-   poster: string;
+   posterImage: string;
    backgroungImage: string;
    backgroungColor: string;
+   isPromo: boolean;
+   isFavorite: boolean;
  }

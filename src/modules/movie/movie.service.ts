@@ -45,17 +45,17 @@ export default class MovieService implements MovieServiceInterface {
       .exec();
   }
 
-  public async updateById(movieId: string, dto: UpdateMovieDto): Promise<DocumentType<MovieEntity> | null> {
+  public async updateById(movieId: string, dto: Partial<UpdateMovieDto>): Promise<DocumentType<MovieEntity> | null> {
     return this.movieModel
       .findByIdAndUpdate(movieId, dto, {new: true})
       .populate(['userId', 'genres'])
       .exec();
   }
 
-  public async findByGenreId(genreId: string, count?: number): Promise<DocumentType<MovieEntity>[]> {
+  public async findByGenreName(genre: string, count?: number): Promise<DocumentType<MovieEntity>[]> {
     const limit = count ?? DEFAULT_MOVIE_COUNT;
     return this.movieModel
-      .find({genres: genreId}, {}, {limit})
+      .find({genres: genre}, {}, {limit})
       .sort({createdAt: SortType.Down})
       .populate(['userId', 'genres'])
       .exec();

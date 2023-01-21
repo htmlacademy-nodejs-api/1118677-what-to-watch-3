@@ -235,7 +235,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/movie"
 
-  /watchlist:
+  /movies/watchlist:
     get:
       tags:
         - watchlist
@@ -266,7 +266,7 @@ paths:
         "401":
           description: Пользователь не авторизован.
 
-  /watchlist/{movieId}:
+  /movies/watchlist/{movieId}:
     post:
       tags:
         - watchlist

@@ -6,11 +6,6 @@ const {prop, modelOptions} = typegoose;
 
 export interface MovieEntity extends defaultClasses.Base {}
 
-class Actor {
-  @prop()
-  public name?: string;
-}
-
 @modelOptions({
   schemaOptions: {
     collection: 'movies'
@@ -46,8 +41,8 @@ export class MovieEntity extends defaultClasses.TimeStamps {
   @prop({required: true})
   public video!: string;
 
-  @prop({type: () => [Actor]})
-  public actors!: Actor[];
+  @prop({required: true})
+  public actors!: string[];
 
   @prop({required: true})
   public director!: string;

@@ -9,8 +9,8 @@ export interface MovieServiceInterface {
   findById(movieId: string): Promise<DocumentType<MovieEntity> | null>;
   find(count?: number): Promise<DocumentType<MovieEntity>[] | null>;
   deleteById(movieId: string): Promise<DocumentType<MovieEntity> | null>;
-  updateById(movieId: string, dto: UpdateMovieDto): Promise<DocumentType<MovieEntity> | null>;
-  findByGenreId(genreId: string, count?: number): Promise<DocumentType<MovieEntity>[]>;
+  updateById(movieId: string, dto: Partial<UpdateMovieDto>): Promise<DocumentType<MovieEntity> | null>;
+  findByGenreName(genre: string, count?: number): Promise<DocumentType<MovieEntity>[]>;
   incCommentCount(movieId: string): Promise<DocumentType<MovieEntity> | null>;
   findPromo(): Promise<DocumentType<MovieEntity> | null>;
   findFavorite(): Promise<DocumentType<MovieEntity>[] | null>;

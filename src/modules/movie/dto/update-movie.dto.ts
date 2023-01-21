@@ -1,7 +1,6 @@
-import { Actor } from '../../../types/actor.type.js';
 import { Genre } from '../../../types/genre.type.js';
 
-export default class CreateMovieDto {
+export default class UpdateMovieDto {
   public title!: string;
   public description!: string;
   public postDate!: string;
@@ -10,7 +9,7 @@ export default class CreateMovieDto {
   public rating!: number;
   public previewVideo!: string;
   public video!: string;
-  public actors!: Actor[];
+  public actors!: string[];
   public director!: string;
   public duration!: number;
   public commentCount!: number;

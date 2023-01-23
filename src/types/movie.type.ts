@@ -1,4 +1,3 @@
-import { Actor } from './actor.type.js';
 import { Genre } from './genre.type.js';
 import { User } from './user.type.js';
 
@@ -11,7 +10,7 @@ export type Movie = {
    rating: number;
    previewVideo: string;
    video: string;
-   actors: Actor[];
+   actors: string[];
    director: string;
    duration: number;
    commentCount: number;

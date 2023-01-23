@@ -1,4 +1,6 @@
 import crypto from 'crypto';
+import {plainToInstance} from 'class-transformer';
+import {ClassConstructor} from 'class-transformer/types/interfaces/class-constructor.type.js';
 import { Movie } from '../types/movie.type.js';
 
 export const createMovie = (row: string) => {
@@ -15,14 +17,16 @@ export const createMovie = (row: string) => {
     rating: Number.parseInt(rating, 10),
     previewVideo,
     video,
-    actors: actors.split(';').map((name) => ({name})),
+    actors: actors.split(';'),
     director,
     duration: Number.parseInt(duration, 10),
     commentCount: Number.parseInt(commentCount, 10),
     user: {firstname, email, avatarPath},
     posterImage,
     backgroungImage,
-    backgroungColor
+    backgroungColor,
+    isPromo: false,
+    isFavorite: false
   } as Movie;
 };
 
@@ -33,3 +37,10 @@ export const createSHA256 = (line: string, salt: string): string => {
   const shaHasher = crypto.createHmac('sha256', salt);
   return shaHasher.update(line).digest('hex');
 };
+
+export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) =>
+  plainToInstance(someDto, plainObject, {excludeExtraneousValues: true});
+
+export const createErrorObject = (message: string) => ({
+  error: message,
+});

@@ -1,4 +1,3 @@
-import { Actor } from '../../../types/actor.type.js';
 import { Genre } from '../../../types/genre.type.js';
 
 export default class CreateMovieDto {
@@ -9,7 +8,7 @@ export default class CreateMovieDto {
   public releaseDate!: string;
   public previewVideo!: string;
   public video!: string;
-  public actors!: Actor[];
+  public actors!: string[];
   public director!: string;
   public duration!: number;
   public userId!: string;

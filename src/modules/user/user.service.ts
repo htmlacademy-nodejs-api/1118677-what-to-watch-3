@@ -7,7 +7,6 @@ import {LoggerInterface} from '../../common/logger/logger.interface.js';
 import {Component} from '../../types/component.types.js';
 import UpdateUserDto from './dto/update-user.dto.js';
 
-
 @injectable()
 export default class UserService implements UserServiceInterface {
   constructor(

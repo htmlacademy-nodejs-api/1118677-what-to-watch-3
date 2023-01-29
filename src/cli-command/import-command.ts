@@ -6,13 +6,10 @@ import DatabaseService from '../common/database-client/database.service.js';
 import ConsoleLoggerService from '../common/logger/console-logger.service.js';
 import {getURI} from '../utils/db.js';
 import {UserServiceInterface} from '../modules/user/user-service.interface.js';
-import {GenreServiceInterface} from '../modules/genre/genre-service.interface.js';
 import {MovieServiceInterface} from '../modules/movie/movie-service.interface.js';
 import UserService from '../modules/user/user.service.js';
 import MovieService from '../modules/movie/movie.service.js';
 import {MovieModel} from '../modules/movie/movie.entity.js';
-import GenreService from '../modules/genre/genre.service.js';
-import {GenreModel} from '../modules/genre/genre.entity.js';
 import {UserModel} from '../modules/user/user.entity.js';
 import {Movie} from '../types/movie.type.js';
 import {LoggerInterface} from '../common/logger/logger.interface.js';
@@ -25,7 +22,6 @@ export default class ImportCommand implements CliCommandInterface {
   public readonly name = '--import';
 
   private userService!: UserServiceInterface;
-  private genreService!: GenreServiceInterface;
   private movieService!: MovieServiceInterface;
   private databaseService!: DatabaseInterface;
   private logger: LoggerInterface;
@@ -37,26 +33,19 @@ export default class ImportCommand implements CliCommandInterface {
 
     this.logger = new ConsoleLoggerService();
     this.movieService = new MovieService(this.logger, MovieModel);
-    this.genreService = new GenreService(this.logger, GenreModel);
     this.userService = new UserService(this.logger, UserModel);
     this.databaseService = new DatabaseService(this.logger);
   }
 
   private async saveMovie(movie: Movie) {
-    const genres = [];
     const user = await this.userService.findOrCreate({
       ...movie.user,
       password: DEFAULT_USER_PASSWORD
     }, this.salt);
 
-    for (const {name} of movie.genres) {
-      const existGenre = await this.genreService.findByGenreNameOrCreate(name, {name});
-      genres.push(existGenre.id);
-    }
 
     await this.movieService.create({
       ...movie,
-      genres,
       userId: user.id,
     });
   }

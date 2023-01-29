@@ -1,5 +1,6 @@
-import typegoose, {defaultClasses, getModelForClass, Ref} from '@typegoose/typegoose';
-import {GenreEntity} from '../genre/genre.entity.js';
+import typegoose, {defaultClasses, getModelForClass, Ref, Severity} from '@typegoose/typegoose';
+import { GenreType } from '../../types/genre-type.enum.js';
+// import {GenreEntity} from '../genre/genre.entity.js';
 import {UserEntity} from '../user/user.entity.js';
 
 const {prop, modelOptions} = typegoose;
@@ -9,6 +10,9 @@ export interface MovieEntity extends defaultClasses.Base {}
 @modelOptions({
   schemaOptions: {
     collection: 'movies'
+  },
+  options: {
+    allowMixed: Severity.ALLOW
   }
 })
 export class MovieEntity extends defaultClasses.TimeStamps {
@@ -18,19 +22,18 @@ export class MovieEntity extends defaultClasses.TimeStamps {
   @prop({trim: true, required: true})
   public description!: string;
 
-  @prop({ default: new Date().toISOString() })
-  public postDate!: string;
+  @prop({ default: new Date() })
+  public postDate!: Date;
 
   @prop({
-    ref: GenreEntity,
-    required: true,
-    default: [],
-    _id: false
+    type: () => String,
+    enum: GenreType,
+    required: true
   })
-  public genres!: Ref<GenreEntity>[];
+  public genre!: GenreType;
 
   @prop({required: true})
-  public releaseDate!: string;
+  public releaseDate!: number;
 
   @prop({default: 0})
   public rating!: number;

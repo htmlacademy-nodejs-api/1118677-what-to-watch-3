@@ -138,20 +138,22 @@ paths:
         "401":
           description: Пользователь не авторизован.
 
-  /movies/genre/{genre}:
-    parameters:
-    - name: genre
-      in: path
-      description: Жанр фильма
-      required: true
-      schema:
-        type: string
-        example: 633041890aa1e923453c2957
+  /movies/{genre}/genres:
     get:
       tags:
         - movies
       summary: Получить список фильмов по жанру
       description: Возвращает массив фильмов по определенному жанру
+
+      parameters:
+      - name: genre
+        in: path
+        description: Жанр фильма
+        required: true
+        schema:
+          type: string
+          example: drama
+
       responses:
         "200":
           description: Список фильмов по жанру. Массив с объектами фильмов.
@@ -163,19 +165,21 @@ paths:
                   $ref: "#/components/schemas/movie"
 
   /movies/{movieId}:
-    parameters:
-    - name: movieId
-      in: path
-      description: Уникальный идентификатор фильма
-      required: true
-      schema:
-        type: string
-        example: 633041890aa1e923453c2957
     get:
       tags:
         - movies
       summary: Получить информацию о фильме
       description: Возвращает детальную информацию по фильму
+
+      parameters:
+      - name: movieId
+        in: path
+        description: Уникальный идентификатор фильма
+        required: true
+        schema:
+          type: string
+          example: 633041890aa1e923453c2957
+
       responses:
         "200":
           description: Детальная информация о фильме. Объект фильма.
@@ -274,21 +278,21 @@ paths:
       description: Добавляет фильм в список «К просмотру» по идентификатору фильма.
 
       parameters:
-          - name: movieId
-            in: path
-            description: Уникальный идентификатор фильма
-            required: true
-            schema:
-              type: string
-              example: 633041890aa1e923453c2957
+        - name: movieId
+          in: path
+          description: Уникальный идентификатор фильма
+          required: true
+          schema:
+            type: string
+            example: 633041890aa1e923453c2957
 
-          - name: action
-            in: query
-            description: 1 - add / 0 - remove
-            required: true
-            schema:
-              type: number
-              example: 1
+        - name: action
+          in: query
+          description: 1 - add / 0 - remove
+          required: true
+          schema:
+            type: number
+            example: 1
 
       responses:
         "200":
@@ -302,7 +306,7 @@ paths:
         "401":
           description: Пользователь не авторизован.
 
-  /comments/{movieId}:
+  /movies/{movieId}/comments:
     post:
       tags:
         - comments

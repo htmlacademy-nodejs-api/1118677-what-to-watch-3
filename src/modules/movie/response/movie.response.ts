@@ -1,5 +1,5 @@
 import {Expose, Type} from 'class-transformer';
-import { Genre } from '../../../types/genre.type';
+// import GenreResponse from '../../genre/response/genre.response.js';
 import UserResponse from '../../user/response/user.response.js';
 
 export default class MovieResponse {
@@ -16,13 +16,13 @@ export default class MovieResponse {
   public postDate!: string;
 
   @Expose()
-  public genres!: Genre[];
+  public genre!: string;
 
   @Expose()
-  public releaseDate!: string;
+  public releaseDate!: number;
 
   @Expose()
-  public rating!: string;
+  public rating!: number;
 
   @Expose()
   public previewVideo!: string;
@@ -38,6 +38,9 @@ export default class MovieResponse {
 
   @Expose()
   public duration!: number;
+
+  // @Expose()
+  // public commentsCount!: number;
 
   @Expose({ name: 'userId'})
   @Type(() => UserResponse)

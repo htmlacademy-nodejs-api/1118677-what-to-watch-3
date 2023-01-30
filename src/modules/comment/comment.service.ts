@@ -6,15 +6,19 @@ import {CommentEntity} from './comment.entity.js';
 import CreateCommentDto from './dto/create-comment.dto.js';
 import { DEFAULT_COMMENT_COUNT } from './comment.constant.js';
 import { SortType } from '../../types/sort-type.enum.js';
+import { LoggerInterface } from '../../common/logger/logger.interface.js';
 
  @injectable()
 export default class CommentService implements CommentServiceInterface {
   constructor(
-     @inject(Component.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>
+    @inject(Component.LoggerInterface) private readonly logger: LoggerInterface,
+    @inject(Component.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>
   ) {}
 
   public async create(dto: CreateCommentDto): Promise<DocumentType<CommentEntity>> {
     const comment = await this.commentModel.create(dto);
+    this.logger.info('Comment added');
+
     return comment.populate('userId');
   }
 

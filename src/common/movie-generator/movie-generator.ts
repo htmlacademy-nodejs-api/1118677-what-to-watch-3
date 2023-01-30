@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { GenreType } from '../../types/genre-type.enum.js';
 import { MockData } from '../../types/mock-data.type.js';
 import { generateRandomValue, getRandomItem, getRandomItems } from '../../utils/random.js';
 import { MovieGeneratorInterface } from './movie-generator.interface.js';
@@ -13,7 +14,7 @@ const MIN_COMMENT_NUMBER = 0;
 const MAX_COMMENT_NUMBER = 1000;
 
 const MIN_RELEASE_DATE = 1895;
-const MAX_RELEASE_DATE = 2023;
+const MAX_RELEASE_DATE = new Date().getFullYear();
 
 const FIRST_YEAR_DAY = 1;
 const LAST_YEAR_DAY = 365;
@@ -25,7 +26,7 @@ export default class MovieGenerator implements MovieGeneratorInterface {
     const title = getRandomItem<string>(this.mockData.titles);
     const description = getRandomItem<string>(this.mockData.descriptions);
     const postDate = dayjs().subtract(generateRandomValue(FIRST_YEAR_DAY, LAST_YEAR_DAY), 'day').toISOString();
-    const genre = getRandomItems<string>(this.mockData.genres).join(';');
+    const genre = getRandomItem<string>(Object.keys(GenreType));
     const releaseDate = generateRandomValue(MIN_RELEASE_DATE, MAX_RELEASE_DATE).toString();
     const rating = generateRandomValue(MIN_RATING, MAX_RATING).toString();
     const previewVideo = getRandomItem<string>(this.mockData.previewVideos);

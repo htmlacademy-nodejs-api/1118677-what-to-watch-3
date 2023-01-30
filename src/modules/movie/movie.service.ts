@@ -26,7 +26,7 @@ export default class MovieService implements MovieServiceInterface {
   public async findById(movieId: string): Promise<DocumentType<MovieEntity> | null> {
     return this.movieModel
       .findById(movieId)
-      .populate(['userId', 'genres'])
+      .populate(['userId'])
       .exec();
   }
 
@@ -35,7 +35,7 @@ export default class MovieService implements MovieServiceInterface {
     return this.movieModel
       .find({}, {}, {limit})
       .sort({createdAt: SortType.Down})
-      .populate(['userId', 'genres'])
+      .populate(['userId'])
       .exec();
   }
 
@@ -48,16 +48,16 @@ export default class MovieService implements MovieServiceInterface {
   public async updateById(movieId: string, dto: Partial<UpdateMovieDto>): Promise<DocumentType<MovieEntity> | null> {
     return this.movieModel
       .findByIdAndUpdate(movieId, dto, {new: true})
-      .populate(['userId', 'genres'])
+      .populate(['userId'])
       .exec();
   }
 
   public async findByGenreName(genre: string, count?: number): Promise<DocumentType<MovieEntity>[]> {
     const limit = count ?? DEFAULT_MOVIE_COUNT;
     return this.movieModel
-      .find({genres: genre}, {}, {limit})
+      .find({genre}, {}, {limit})
       .sort({createdAt: SortType.Down})
-      .populate(['userId', 'genres'])
+      .populate(['userId'])
       .exec();
   }
 
@@ -76,14 +76,14 @@ export default class MovieService implements MovieServiceInterface {
   public async findPromo(): Promise<DocumentType<MovieEntity> | null> {
     return this.movieModel
       .findOne({isPromo: true})
-      .populate(['userId', 'genres'])
+      .populate(['userId'])
       .exec();
   }
 
   public async findFavorite(): Promise<DocumentType<MovieEntity>[] | null> {
     return this.movieModel
       .find({isFavorite: true})
-      .populate(['userId', 'genres'])
+      .populate(['userId'])
       .exec();
   }
 
@@ -93,7 +93,7 @@ export default class MovieService implements MovieServiceInterface {
   ): Promise<DocumentType<MovieEntity> | null> {
     return this.movieModel
       .findByIdAndUpdate(movieId, {isFavorite: status}, {new: true})
-      .populate(['userId', 'genres'])
+      .populate(['userId'])
       .exec();
   }
 }

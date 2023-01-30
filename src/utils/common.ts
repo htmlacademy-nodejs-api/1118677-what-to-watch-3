@@ -2,18 +2,19 @@ import crypto from 'crypto';
 import {plainToInstance} from 'class-transformer';
 import {ClassConstructor} from 'class-transformer/types/interfaces/class-constructor.type.js';
 import { Movie } from '../types/movie.type.js';
+import { GenreType } from '../types/genre-type.enum.js';
 
 export const createMovie = (row: string) => {
   const tokens = row.replace('\n', '').split('\t');
-  const [title, description, createdDate, genres, releaseDate, rating, previewVideo, video,
+  const [title, description, createdDate, genre, releaseDate, rating, previewVideo, video,
     actors, director, duration, commentCount, firstname, email, avatarPath, posterImage,
     backgroungImage, backgroungColor] = tokens;
   return {
     title,
     description,
-    postDate: new Date(createdDate).toISOString(),
-    genres: genres.split(';').map((name) => ({name})),
-    releaseDate,
+    postDate: new Date(createdDate),
+    genre: GenreType[genre as 'Comedy' | 'Crime' | 'Documentary' | 'Drama' | 'Horror' | 'Family' | 'Romance' | 'SciFi' | 'Thriller'],
+    releaseDate: Number(releaseDate),
     rating: Number.parseInt(rating, 10),
     previewVideo,
     video,

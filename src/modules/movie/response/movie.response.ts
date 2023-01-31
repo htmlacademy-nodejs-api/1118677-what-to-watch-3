@@ -39,8 +39,8 @@ export default class MovieResponse {
   @Expose()
   public duration!: number;
 
-  // @Expose()
-  // public commentsCount!: number;
+  @Expose()
+  public commentsCount!: number;
 
   @Expose({ name: 'userId'})
   @Type(() => UserResponse)

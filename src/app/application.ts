@@ -8,7 +8,6 @@ import {getURI} from '../utils/db.js';
 import {DatabaseInterface} from '../common/database-client/database.interface.js';
 import {ControllerInterface} from '../common/controller/controller.interface.js';
 import {ExceptionFilterInterface} from '../common/errors/exception-filter.interface.js';
-// import { MovieServiceInterface } from '../modules/movie/movie-service.interface.js';
 
 @injectable()
 export default class Application {
@@ -22,7 +21,7 @@ export default class Application {
     @inject(Component.UserController) private userController: ControllerInterface,
     @inject(Component.MovieController) private movieController: ControllerInterface,
     @inject(Component.CommentController) private commentController: ControllerInterface,
-    // @inject(Component.MovieServiceInterface) private movieService: MovieServiceInterface
+    @inject(Component.WatchlistController) private watchlistController: ControllerInterface,
   ) {
     this.expressApp = express();
   }
@@ -31,6 +30,7 @@ export default class Application {
     this.expressApp.use('/movies', this.movieController.router);
     this.expressApp.use('/users', this.userController.router);
     this.expressApp.use('/comments', this.commentController.router);
+    this.expressApp.use('/watchlist', this.watchlistController.router);
   }
 
   public initMiddleware() {
@@ -65,7 +65,5 @@ export default class Application {
     this.expressApp.listen(this.config.get('PORT'));
     this.logger.info(`Server started on http://localhost:${this.config.get('PORT')}`);
 
-    // const movie = await this.movieService.findById('63c6d89a29ce0ec90372d2e1');
-    // console.log('movie', movie);
   }
 }

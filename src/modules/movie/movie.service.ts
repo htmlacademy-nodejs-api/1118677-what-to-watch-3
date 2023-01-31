@@ -6,7 +6,7 @@ import {MovieEntity} from './movie.entity.js';
 import {Component} from '../../types/component.types.js';
 import {LoggerInterface} from '../../common/logger/logger.interface.js';
 import UpdateMovieDto from './dto/update-movie.dto.js';
-import {DEFAULT_MOVIE_COUNT, Favorite} from './movie.constant.js';
+import {DEFAULT_MOVIE_COUNT} from './movie.constant.js';
 import {SortType} from '../../types/sort-type.enum.js';
 
 @injectable()
@@ -73,12 +73,12 @@ export default class MovieService implements MovieServiceInterface {
       }}).exec();
   }
 
-  public async findPromo(): Promise<DocumentType<MovieEntity> | null> {
-    return this.movieModel
-      .findOne({isPromo: true})
-      .populate(['userId'])
-      .exec();
-  }
+  // public async findPromo(): Promise<DocumentType<MovieEntity> | null> {
+  //   return this.movieModel
+  //     .findOne({isPromo: true})
+  //     .populate(['userId'])
+  //     .exec();
+  // }
 
   public async findFavorite(): Promise<DocumentType<MovieEntity>[] | null> {
     return this.movieModel
@@ -89,7 +89,8 @@ export default class MovieService implements MovieServiceInterface {
 
   public async changeFavoriteStatus(
     movieId: string,
-    status: Favorite
+    status: boolean
+    // status: Favorite
   ): Promise<DocumentType<MovieEntity> | null> {
     return this.movieModel
       .findByIdAndUpdate(movieId, {isFavorite: status}, {new: true})

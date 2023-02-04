@@ -5,8 +5,6 @@ export const Component = {
   DatabaseInterface: Symbol.for('DatabaseInterface'),
   UserServiceInterface: Symbol.for('UserServiceInterface'),
   UserModel: Symbol.for('UserModel'),
-  GenreServiceInterface: Symbol.for('GenreServiceInterface'),
-  GenreModel: Symbol.for('GenreModel'),
   MovieServiceInterface: Symbol.for('MovieServiceInterface'),
   MovieModel: Symbol.for('MovieModel'),
   CommentServiceInterface: Symbol.for('CommentServiceInterface'),
@@ -15,4 +13,7 @@ export const Component = {
   UserController: Symbol.for('UserController'),
   MovieController: Symbol.for('MovieController'),
   CommentController: Symbol.for('CommentController'),
+  WatchlistController: Symbol.for('WatchlistController'),
+  WatchlistServiceInterface: Symbol.for('WatchlistServiceInterface'),
+  WatchlistModel: Symbol.for('WatchlistModel'),
 } as const;

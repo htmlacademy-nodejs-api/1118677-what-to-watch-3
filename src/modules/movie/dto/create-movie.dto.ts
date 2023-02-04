@@ -22,8 +22,6 @@ export default class CreateMovieDto {
   @Max(new Date().getFullYear(), {message: 'Maximum releaseDate is current year'})
   public releaseDate!: number;
 
-  // public rating!: number;
-
   @IsString({message: 'previewVideoLink is required'})
   public previewVideo!: string;
 
@@ -38,8 +36,6 @@ export default class CreateMovieDto {
 
   @IsInt({message: 'duration must be an integer'})
   public duration!: number;
-
-  // public commentCount!: number;
 
   @IsString({message: 'posterImage is required'})
   public posterImage!: string;

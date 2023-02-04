@@ -58,17 +58,14 @@ export default class MovieController extends Controller {
         new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId'),
       ]});
     this.addRoute({path: '/:genreId/genres', method: HttpMethod.Get, handler: this.findByGenre,
-      // middlewares: [new ValidateObjectIdMiddleware('movieId')]
     });
     this.addRoute({path: '/:movieId/comments', method: HttpMethod.Get, handler: this.getComments,
       middlewares: [
         new ValidateObjectIdMiddleware('movieId'),
         new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId'),
       ]});
-
-
-    this.addRoute({path: '/promo', method: HttpMethod.Get, handler: this.findPromo});
-    this.addRoute({path: '/watchlist', method: HttpMethod.Get, handler: this.findFavorite});
+    // this.addRoute({path: '/promo', method: HttpMethod.Get, handler: this.findPromo});
+    // this.addRoute({path: '/watchlist', method: HttpMethod.Get, handler: this.findFavorite});
   }
 
   public async show(
@@ -136,17 +133,17 @@ export default class MovieController extends Controller {
     this.ok(res, fillDTO(MovieResponse, movie));
   }
 
-  public async findPromo(
-    _req: Request,
-    res: Response
-  ): Promise<void> {
-    const movie = await this.movieService.findPromo();
-    this.ok(res, fillDTO(MovieResponse, movie));
-  }
+  // public async findPromo(
+  //   _req: Request,
+  //   res: Response
+  // ): Promise<void> {
+  //   const movie = await this.movieService.findPromo();
+  //   this.ok(res, fillDTO(MovieResponse, movie));
+  // }
 
-  public async findFavorite(_req: Request, res: Response) {
-    const movie = await this.movieService.findFavorite();
-    this.ok(res, fillDTO(MovieResponse, movie));
-  }
+  // public async findFavorite(_req: Request, res: Response) {
+  //   const movie = await this.movieService.findFavorite();
+  //   this.ok(res, fillDTO(MovieResponse, movie));
+  // }
 
 }

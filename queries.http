@@ -123,3 +123,10 @@ Content-Type: image/png
 
 < /Users/mac/Downloads/avatar.png
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+###
+# Фильмы
+## Получить watchlist фильм
+GET http://localhost:31337/watchlist  HTTP/1.1
+Content-Type: application/json

@@ -1,5 +1,5 @@
 import { GenreType } from '../../../types/genre-type.enum.js';
-import {IsArray, IsDateString, IsInt, Max, MaxLength, Min, MinLength, IsString, IsEnum, IsOptional} from 'class-validator';
+import {IsArray, IsDateString, IsInt, Max, MaxLength, Min, MinLength, IsString, IsEnum, IsOptional, IsBoolean} from 'class-validator';
 
 export default class UpdateMovieDto {
   @IsOptional()
@@ -26,7 +26,6 @@ export default class UpdateMovieDto {
   @Max(new Date().getFullYear(), {message: 'Maximum releaseDate is current year'})
   public releaseDate?: number;
 
-  // public rating?: number;
   @IsOptional()
   @IsString({message: 'previewVideoLink is required'})
   public previewVideo?: string;
@@ -47,7 +46,6 @@ export default class UpdateMovieDto {
   @IsInt({message: 'duration must be an integer'})
   public duration?: number;
 
-  // public commentCount?: number;
   @IsOptional()
   @IsString({message: 'posterImage is required'})
   public posterImage?: string;
@@ -59,4 +57,8 @@ export default class UpdateMovieDto {
   @IsOptional()
   @IsString({message: 'backgroundColor is required'})
   public backgroungColor?: string;
+
+  @IsOptional()
+  @IsBoolean({message: 'isPromo must be boolean'})
+  public isPromo?: boolean;
 }

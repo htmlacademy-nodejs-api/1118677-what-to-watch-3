@@ -127,6 +127,6 @@ Content-Type: image/png
 
 ###
 # Фильмы
-## Получить промо фильм
-GET http://localhost:31337/promo  HTTP/1.1
+## Получить watchlist фильм
+GET http://localhost:31337/watchlist  HTTP/1.1
 Content-Type: application/json

@@ -16,6 +16,7 @@ import CommentResponse from '../comment/response/comment.response.js';
 import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectid.middleware.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import {DocumentExistsMiddleware} from '../../common/middlewares/document-exists.middleware.js';
+import {PrivateRouteMiddleware} from '../../common/middlewares/private-route.middleware.js';
 
 type ParamsGetMovie = {
   movieId: string;
@@ -38,8 +39,11 @@ export default class MovieController extends Controller {
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateDtoMiddleware(CreateMovieDto)
       ]});
+    this.addRoute({path: '/promo', method: HttpMethod.Get, handler: this.findPromo});
+
     this.addRoute({path: '/:movieId', method: HttpMethod.Get, handler: this.show,
       middlewares: [
         new ValidateObjectIdMiddleware('movieId'),
@@ -48,11 +52,13 @@ export default class MovieController extends Controller {
     });
     this.addRoute({path: '/:movieId', method: HttpMethod.Delete, handler: this.delete,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('movieId'),
         new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId'),
       ]});
     this.addRoute({path: '/:movieId', method: HttpMethod.Patch, handler: this.update,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('movieId'),
         new ValidateDtoMiddleware(UpdateMovieDto),
         new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId'),
@@ -87,11 +93,11 @@ export default class MovieController extends Controller {
   }
 
   public async create(
-    {body}: Request<Record<string, unknown>, Record<string, unknown>, CreateMovieDto>,
+    req: Request<Record<string, unknown>, Record<string, unknown>, CreateMovieDto>,
     res: Response
   ): Promise<void> {
-
-    const result = await this.movieService.create(body);
+    const {body, user} = req;
+    const result = await this.movieService.create({...body, userId: user.id});
     const movie = await this.movieService.findById(result.id);
     this.created(res, fillDTO(MovieResponse, movie));
   }
@@ -133,13 +139,13 @@ export default class MovieController extends Controller {
     this.ok(res, fillDTO(MovieResponse, movie));
   }
 
-  // public async findPromo(
-  //   _req: Request,
-  //   res: Response
-  // ): Promise<void> {
-  //   const movie = await this.movieService.findPromo();
-  //   this.ok(res, fillDTO(MovieResponse, movie));
-  // }
+  public async findPromo(
+    _req: Request,
+    res: Response
+  ): Promise<void> {
+    const movie = await this.movieService.findPromo();
+    this.ok(res, fillDTO(MovieResponse, movie));
+  }
 
   // public async findFavorite(_req: Request, res: Response) {
   //   const movie = await this.movieService.findFavorite();

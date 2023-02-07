@@ -1,5 +1,4 @@
 import {Expose, Type} from 'class-transformer';
-// import GenreResponse from '../../genre/response/genre.response.js';
 import UserResponse from '../../user/response/user.response.js';
 
 export default class MovieResponse {
@@ -48,9 +47,6 @@ export default class MovieResponse {
 
   @Expose()
   public posterImage!: string;
-
-  @Expose()
-  public isPromo!: boolean;
 
   @Expose()
   public isFavorite!: boolean;

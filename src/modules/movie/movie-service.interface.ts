@@ -12,7 +12,8 @@ export interface MovieServiceInterface extends DocumentExistsInterface{
   updateById(movieId: string, dto: Partial<UpdateMovieDto>): Promise<DocumentType<MovieEntity> | null>;
   findByGenreName(genre: string, count?: number): Promise<DocumentType<MovieEntity>[]>;
   incCommentCount(movieId: string): Promise<DocumentType<MovieEntity> | null>;
-  // findPromo(): Promise<DocumentType<MovieEntity> | null>;
+  updateRating(filmId: string): Promise<DocumentType<MovieEntity> | null>;
+  findPromo(): Promise<DocumentType<MovieEntity> | null>;
   findFavorite(): Promise<DocumentType<MovieEntity>[] | null>;
   changeFavoriteStatus(movieId: string, status: boolean): Promise<DocumentType<MovieEntity> | null>;
   exists(documentId: string): Promise<boolean>;

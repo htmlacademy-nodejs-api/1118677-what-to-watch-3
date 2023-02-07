@@ -8,12 +8,15 @@ import {LoggerInterface} from '../../common/logger/logger.interface.js';
 import UpdateMovieDto from './dto/update-movie.dto.js';
 import {DEFAULT_MOVIE_COUNT} from './movie.constant.js';
 import {SortType} from '../../types/sort-type.enum.js';
+import { Types } from 'mongoose';
+import { CommentEntity } from '../comment/comment.entity.js';
 
 @injectable()
 export default class MovieService implements MovieServiceInterface {
   constructor(
     @inject(Component.LoggerInterface) private readonly logger: LoggerInterface,
-    @inject(Component.MovieModel) private readonly movieModel: types.ModelType<MovieEntity>
+    @inject(Component.MovieModel) private readonly movieModel: types.ModelType<MovieEntity>,
+    @inject(Component.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>,
   ) {}
 
   public async create(dto: CreateMovieDto): Promise<DocumentType<MovieEntity>> {
@@ -73,12 +76,37 @@ export default class MovieService implements MovieServiceInterface {
       }}).exec();
   }
 
-  // public async findPromo(): Promise<DocumentType<MovieEntity> | null> {
-  //   return this.movieModel
-  //     .findOne({isPromo: true})
-  //     .populate(['userId'])
-  //     .exec();
-  // }
+  public async updateRating(movieId: string): Promise<DocumentType<MovieEntity> | null> {
+    const result = await this.commentModel
+      .aggregate([
+        {
+          $match: {
+            movieId: new Types.ObjectId(movieId)
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            avgRating: { $avg: '$rating' }
+          }
+        }
+      ])
+      .exec();
+
+    return this.movieModel
+      .findByIdAndUpdate(movieId, {'$set': {
+        rating: result[0]['avgRating'],
+      }})
+      .exec();
+  }
+
+
+  public async findPromo(): Promise<DocumentType<MovieEntity> | null> {
+    return this.movieModel
+      .findOne({isPromo: true})
+      .populate(['userId'])
+      .exec();
+  }
 
   public async findFavorite(): Promise<DocumentType<MovieEntity>[] | null> {
     return this.movieModel
@@ -90,7 +118,6 @@ export default class MovieService implements MovieServiceInterface {
   public async changeFavoriteStatus(
     movieId: string,
     status: boolean
-    // status: Favorite
   ): Promise<DocumentType<MovieEntity> | null> {
     return this.movieModel
       .findByIdAndUpdate(movieId, {isFavorite: status}, {new: true})

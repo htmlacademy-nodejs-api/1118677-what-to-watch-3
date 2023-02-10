@@ -15,7 +15,7 @@ export default class ShortFilmResponse {
   public previewVideo!: string;
 
   @Expose()
-  public commentsCount!: number;
+  public commentCount!: number;
 
   @Expose({ name: 'userId' })
   @Type(() => UserResponse)
@@ -23,7 +23,4 @@ export default class ShortFilmResponse {
 
   @Expose()
   public posterImage!: string;
-
-  @Expose()
-  public isFavorite!: boolean;
 }

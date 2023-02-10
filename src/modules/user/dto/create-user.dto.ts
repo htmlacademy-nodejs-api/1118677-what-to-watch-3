@@ -1,13 +1,11 @@
 import {IsEmail, IsString, Length} from 'class-validator';
+import { userNameLength } from '../user.constant.js';
 export default class CreateUserDto {
   @IsEmail({}, {message: 'email must be valid address'})
   public email!: string;
 
-  @IsString({message: 'avatarPath is required'})
-  public avatarPath!: string;
-
   @IsString({message: 'firstname is required'})
-  @Length(1, 15, {message: 'Min length is 1, max is 15'})
+  @Length(userNameLength.MIN, userNameLength.MAX,{message: 'Min length is 1, max is 15'})
   public firstname!: string;
 
   @IsString({message: 'password is required'})

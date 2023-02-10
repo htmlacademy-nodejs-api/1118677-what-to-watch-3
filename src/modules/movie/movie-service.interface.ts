@@ -7,6 +7,7 @@ import { DocumentExistsInterface } from '../../types/document-exists.interface.j
 export interface MovieServiceInterface extends DocumentExistsInterface{
   create(dto: CreateMovieDto): Promise<DocumentType<MovieEntity>>;
   findById(movieId: string): Promise<DocumentType<MovieEntity> | null>;
+  findByMovieName(movieName: string): Promise<DocumentType<MovieEntity> | null>;
   find(count?: number): Promise<DocumentType<MovieEntity>[] | null>;
   deleteById(movieId: string): Promise<DocumentType<MovieEntity> | null>;
   updateById(movieId: string, dto: Partial<UpdateMovieDto>): Promise<DocumentType<MovieEntity> | null>;
@@ -14,7 +15,7 @@ export interface MovieServiceInterface extends DocumentExistsInterface{
   incCommentCount(movieId: string): Promise<DocumentType<MovieEntity> | null>;
   updateRating(filmId: string): Promise<DocumentType<MovieEntity> | null>;
   findPromo(): Promise<DocumentType<MovieEntity> | null>;
-  findFavorite(): Promise<DocumentType<MovieEntity>[] | null>;
+  findFavorite(userId: string): Promise<DocumentType<MovieEntity>[] | null>;
   changeFavoriteStatus(movieId: string, status: boolean): Promise<DocumentType<MovieEntity> | null>;
   exists(documentId: string): Promise<boolean>;
 }

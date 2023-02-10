@@ -16,8 +16,7 @@ export type Movie = {
    commentCount: number;
    user: User;
    posterImage: string;
-   backgroungImage: string;
-   backgroungColor: string;
+   backgroundImage: string;
+   backgroundColor: string;
    isPromo: boolean;
-   isFavorite: boolean;
  }

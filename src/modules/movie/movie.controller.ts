@@ -7,6 +7,7 @@ import {LoggerInterface} from '../../common/logger/logger.interface.js';
 import {HttpMethod} from '../../types/http-method.enum.js';
 import { MovieServiceInterface } from './movie-service.interface.js';
 import MovieResponse from './response/movie.response.js';
+import ShortMovieResponse from './response/short-movie.response.js';
 import {fillDTO} from '../../utils/common.js';
 import CreateMovieDto from './dto/create-movie.dto.js';
 import UpdateMovieDto from './dto/update-movie.dto.js';
@@ -17,22 +18,31 @@ import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-ob
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import {DocumentExistsMiddleware} from '../../common/middlewares/document-exists.middleware.js';
 import {PrivateRouteMiddleware} from '../../common/middlewares/private-route.middleware.js';
+import {ConfigInterface} from '../../common/config/config.interface.js';
+import {UploadFileMiddleware} from '../../common/middlewares/upload-file.middleware.js';
+import UploadPreviewImageResponse from './response/upload-preview-image.response.js';
+import UploadPosterImageResponse from './response/upload-poster-image.response.js';
+import UploadBackgroundImageResponse from './response/upload-background-image.response.js';
+import { StatusCodes } from 'http-status-codes';
+import HttpError from '../../common/errors/http-error.js';
+import { GenreType } from '../../types/genre-type.enum.js';
 
 type ParamsGetMovie = {
   movieId: string;
 }
 
 type ParamsGetMovieByGenre = {
-  genreId: string;
+  genreId: GenreType;
 }
 @injectable()
 export default class MovieController extends Controller {
   constructor(
     @inject(Component.LoggerInterface) logger: LoggerInterface,
+    @inject(Component.ConfigInterface) configService: ConfigInterface,
     @inject(Component.MovieServiceInterface) private readonly movieService: MovieServiceInterface,
     @inject(Component.CommentServiceInterface) private readonly commentService: CommentServiceInterface
   ) {
-    super(logger);
+    super(logger, configService);
 
     this.logger.info('Register routes for MovieController…');
 
@@ -63,6 +73,37 @@ export default class MovieController extends Controller {
         new ValidateDtoMiddleware(UpdateMovieDto),
         new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId'),
       ]});
+
+    this.addRoute({
+      path: '/:movieId/image/preview',
+      method: HttpMethod.Post,
+      handler: this.uploadPreviewImage,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('movieId'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'image'),
+      ]
+    });
+    this.addRoute({
+      path: '/:movieId/image/poster',
+      method: HttpMethod.Post,
+      handler: this.uploadPosterImage,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('movieId'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'image'),
+      ]
+    });
+    this.addRoute({
+      path: '/:movieId/image/background',
+      method: HttpMethod.Post,
+      handler: this.uploadBackgroundImage,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('movieId'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'image'),
+      ]
+    });
     this.addRoute({path: '/:genreId/genres', method: HttpMethod.Get, handler: this.findByGenre,
     });
     this.addRoute({path: '/:movieId/comments', method: HttpMethod.Get, handler: this.getComments,
@@ -70,8 +111,6 @@ export default class MovieController extends Controller {
         new ValidateObjectIdMiddleware('movieId'),
         new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId'),
       ]});
-    // this.addRoute({path: '/promo', method: HttpMethod.Get, handler: this.findPromo});
-    // this.addRoute({path: '/watchlist', method: HttpMethod.Get, handler: this.findFavorite});
   }
 
   public async show(
@@ -89,7 +128,7 @@ export default class MovieController extends Controller {
   ): Promise<void> {
     const limit = req.query.limit;
     const movies = await this.movieService.find(limit);
-    this.ok(res, fillDTO(MovieResponse, movies));
+    this.ok(res, fillDTO(ShortMovieResponse, movies));
   }
 
   public async create(
@@ -97,6 +136,16 @@ export default class MovieController extends Controller {
     res: Response
   ): Promise<void> {
     const {body, user} = req;
+
+    const existMovie = await this.movieService.findByMovieName(body.title);
+    if (existMovie) {
+      throw new HttpError(
+        StatusCodes.UNPROCESSABLE_ENTITY,
+        `Movie with name «${body.title}» exists.`,
+        'MovieController'
+      );
+    }
+
     const result = await this.movieService.create({...body, userId: user.id});
     const movie = await this.movieService.findById(result.id);
     this.created(res, fillDTO(MovieResponse, movie));
@@ -114,10 +163,21 @@ export default class MovieController extends Controller {
   }
 
   public async update(
-    {body, params}: Request<core.ParamsDictionary | ParamsGetMovie, Record<string, unknown>, UpdateMovieDto>,
+    {body, params, user}: Request<core.ParamsDictionary | ParamsGetMovie, Record<string, unknown>, UpdateMovieDto>,
     res: Response
   ): Promise<void> {
     const { movieId } = params;
+
+    const movie = await this.movieService.findById(movieId);
+    this.logger.info(`movie?.userId ${movie?.userId}`);
+    this.logger.info(`userId ${user.id}`);
+    if (movie?.userId?._id.toString() !== user.id) {
+      throw new HttpError(
+        StatusCodes.FORBIDDEN,
+        `User don't have root to change movie (id: ${movieId})`,
+        'MovieController'
+      );
+    }
     const updateMovie = await this.movieService.updateById(movieId, body);
 
     this.ok(res, fillDTO(MovieResponse, updateMovie));
@@ -131,12 +191,33 @@ export default class MovieController extends Controller {
     this.ok(res, fillDTO(CommentResponse, comments));
   }
 
+  public async uploadPreviewImage(req: Request<core.ParamsDictionary | ParamsGetMovie>, res: Response) {
+    const {movieId} = req.params;
+    const updateDto = { previewVideo: req.file?.filename };
+    await this.movieService.updateById(movieId, updateDto);
+    this.created(res, fillDTO(UploadPreviewImageResponse, {updateDto}));
+  }
+
+  public async uploadPosterImage(req: Request<core.ParamsDictionary | ParamsGetMovie>, res: Response) {
+    const {movieId} = req.params;
+    const updateDto = { posterImage: req.file?.filename };
+    await this.movieService.updateById(movieId, updateDto);
+    this.created(res, fillDTO(UploadPosterImageResponse, {updateDto}));
+  }
+
+  public async uploadBackgroundImage(req: Request<core.ParamsDictionary | ParamsGetMovie>, res: Response) {
+    const {movieId} = req.params;
+    const updateDto = { backgroundImage: req.file?.filename };
+    await this.movieService.updateById(movieId, updateDto);
+    this.created(res, fillDTO(UploadBackgroundImageResponse, {updateDto}));
+  }
+
   public async findByGenre(
     {params, query}: Request<core.ParamsDictionary | ParamsGetMovieByGenre, unknown, unknown, RequestQuery>,
     res: Response
   ): Promise<void> {
-    const movie = await this.movieService.findByGenreName(params.genreId, query.limit);
-    this.ok(res, fillDTO(MovieResponse, movie));
+    const movies = await this.movieService.findByGenreName(params.genreId, query.limit);
+    this.ok(res, fillDTO(ShortMovieResponse, movies));
   }
 
   public async findPromo(
@@ -146,10 +227,5 @@ export default class MovieController extends Controller {
     const movie = await this.movieService.findPromo();
     this.ok(res, fillDTO(MovieResponse, movie));
   }
-
-  // public async findFavorite(_req: Request, res: Response) {
-  //   const movie = await this.movieService.findFavorite();
-  //   this.ok(res, fillDTO(MovieResponse, movie));
-  // }
 
 }

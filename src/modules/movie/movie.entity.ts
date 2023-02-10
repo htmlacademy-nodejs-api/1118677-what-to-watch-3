@@ -1,6 +1,5 @@
 import typegoose, {defaultClasses, getModelForClass, Ref, Severity} from '@typegoose/typegoose';
 import { GenreType } from '../../types/genre-type.enum.js';
-// import {GenreEntity} from '../genre/genre.entity.js';
 import {UserEntity} from '../user/user.entity.js';
 
 const {prop, modelOptions} = typegoose;
@@ -66,16 +65,13 @@ export class MovieEntity extends defaultClasses.TimeStamps {
   public posterImage!: string;
 
   @prop({default: ''})
-  public backgroungImage!: string;
+  public backgroundImage!: string;
 
   @prop({required: true})
-  public backgroungColor!: string;
+  public backgroundColor!: string;
 
   @prop({default: false})
   public isPromo!: boolean;
-
-  @prop({default: false})
-  public isFavorite!: boolean;
 }
 
 export const MovieModel = getModelForClass(MovieEntity);

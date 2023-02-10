@@ -1,15 +1,14 @@
 import { GenreType } from '../../../types/genre-type.enum.js';
-import {IsArray, IsDateString, IsInt, Max, MaxLength, Min, MinLength, IsString, IsEnum, IsOptional, IsBoolean} from 'class-validator';
+import {IsArray, IsDateString, IsInt, Max, Min, IsString, IsEnum, IsOptional, IsBoolean, Length, Contains} from 'class-validator';
+import { descriptionLength, directorLength, releaseDate, titleLength } from '../movie.constant.js';
 
 export default class UpdateMovieDto {
   @IsOptional()
-  @MinLength(2, {message: 'Minimum title length must be 2'})
-  @MaxLength(100, {message: 'Maximum title length must be 100'})
+  @Length(titleLength.MIN, titleLength.MAX, {message: 'Min length is 2, max length is 100'})
   public title?: string;
 
   @IsOptional()
-  @MinLength(20, {message: 'Minimum description length must be 20'})
-  @MaxLength(1024, {message: 'Maximum description length must be 1024'})
+  @Length(descriptionLength.MIN, descriptionLength.MAX, {message: 'Min length is 20, max length is 1024'})
   public description?: string;
 
   @IsOptional()
@@ -22,16 +21,16 @@ export default class UpdateMovieDto {
 
   @IsOptional()
   @IsInt({message: 'releaseDate must be an integer'})
-  @Min(1895, {message: 'Minimum releaseDate is 1895'})
-  @Max(new Date().getFullYear(), {message: 'Maximum releaseDate is current year'})
+  @Min(releaseDate.MIN, {message: 'Minimum releaseDate is 1895'})
+  @Max(releaseDate.MAX, {message: 'Maximum releaseDate is current year'})
   public releaseDate?: number;
 
   @IsOptional()
-  @IsString({message: 'previewVideoLink is required'})
+  @IsString({message: 'previewVideoLink is string'})
   public previewVideo?: string;
 
   @IsOptional()
-  @IsString({message: 'video is required'})
+  @IsString({message: 'video is string'})
   public video?: string;
 
   @IsOptional()
@@ -39,7 +38,8 @@ export default class UpdateMovieDto {
   public actors?: string[];
 
   @IsOptional()
-  @IsString({message: 'director is required'})
+  @IsString({message: 'director is string'})
+  @Length(directorLength.MIN, directorLength.MAX, {message: 'Min length is 2, max length is 50'})
   public director?: string;
 
   @IsOptional()
@@ -47,16 +47,16 @@ export default class UpdateMovieDto {
   public duration?: number;
 
   @IsOptional()
-  @IsString({message: 'posterImage is required'})
+  @Contains('.jpg', {message: 'posterImage field must be a link on .jpg format'})
   public posterImage?: string;
 
   @IsOptional()
-  @IsString({message: 'backgroungImage is required'})
-  public backgroungImage?: string;
+  @Contains('.jpg', {message: 'backgroundImage field must be a link on .jpg format'})
+  public backgroundImage?: string;
 
   @IsOptional()
-  @IsString({message: 'backgroundColor is required'})
-  public backgroungColor?: string;
+  @IsString({message: 'backgroundColor is string'})
+  public backgroundColor?: string;
 
   @IsOptional()
   @IsBoolean({message: 'isPromo must be boolean'})

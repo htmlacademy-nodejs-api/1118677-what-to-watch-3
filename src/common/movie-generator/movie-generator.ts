@@ -39,8 +39,8 @@ export default class MovieGenerator implements MovieGeneratorInterface {
     const email = getRandomItem<string>(this.mockData.emails);
     const avatar = getRandomItem<string>(this.mockData.avatars);
     const posterImage = getRandomItem<string>(this.mockData.posters);
-    const backgroungImage = getRandomItem<string>(this.mockData.backgroungImages);
-    const backgroungColor = getRandomItem<string>(this.mockData.backgroungColors);
+    const backgroundImage = getRandomItem<string>(this.mockData.backgroundImages);
+    const backgroundColor = getRandomItem<string>(this.mockData.backgroundColors);
 
     return [
       title, description,
@@ -51,8 +51,8 @@ export default class MovieGenerator implements MovieGeneratorInterface {
       duration, commentCount,
       user, email,
       avatar, posterImage,
-      backgroungImage,
-      backgroungColor
+      backgroundImage,
+      backgroundColor
     ].join('\t');
   }
 }

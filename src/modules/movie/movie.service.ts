@@ -10,6 +10,8 @@ import {DEFAULT_MOVIE_COUNT} from './movie.constant.js';
 import {SortType} from '../../types/sort-type.enum.js';
 import { Types } from 'mongoose';
 import { CommentEntity } from '../comment/comment.entity.js';
+import { WatchlistEntity } from '../watchlist/watchlist.entity.js';
+import { GenreType } from '../../types/genre-type.enum.js';
 
 @injectable()
 export default class MovieService implements MovieServiceInterface {
@@ -17,6 +19,7 @@ export default class MovieService implements MovieServiceInterface {
     @inject(Component.LoggerInterface) private readonly logger: LoggerInterface,
     @inject(Component.MovieModel) private readonly movieModel: types.ModelType<MovieEntity>,
     @inject(Component.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>,
+    @inject(Component.WatchlistModel) private readonly watchlistModel: types.ModelType<WatchlistEntity>
   ) {}
 
   public async create(dto: CreateMovieDto): Promise<DocumentType<MovieEntity>> {
@@ -42,6 +45,12 @@ export default class MovieService implements MovieServiceInterface {
       .exec();
   }
 
+  public async findByMovieName(movieName: string): Promise<DocumentType<MovieEntity> | null> {
+    return this.movieModel
+      .findOne({ title: movieName })
+      .exec();
+  }
+
   public async deleteById(movieId: string): Promise<DocumentType<MovieEntity> | null> {
     return this.movieModel
       .findByIdAndDelete(movieId)
@@ -55,7 +64,7 @@ export default class MovieService implements MovieServiceInterface {
       .exec();
   }
 
-  public async findByGenreName(genre: string, count?: number): Promise<DocumentType<MovieEntity>[]> {
+  public async findByGenreName(genre: GenreType, count?: number): Promise<DocumentType<MovieEntity>[]> {
     const limit = count ?? DEFAULT_MOVIE_COUNT;
     return this.movieModel
       .find({genre}, {}, {limit})
@@ -108,20 +117,48 @@ export default class MovieService implements MovieServiceInterface {
       .exec();
   }
 
-  public async findFavorite(): Promise<DocumentType<MovieEntity>[] | null> {
-    return this.movieModel
-      .find({isFavorite: true})
-      .populate(['userId'])
+  public async findFavorite(userId: string): Promise<DocumentType<MovieEntity>[]> {
+    const favoriteMovies = await this.watchlistModel
+      .findOne({ userId })
+      .select('movieIds')
       .exec();
+    if (!favoriteMovies?.movieIds) {
+      return [];
+    }
+    return this.movieModel
+      .aggregate([
+        {
+          $match: { _id: { $in: favoriteMovies.movieIds } }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'userId',
+            foreignField: '_id',
+            as: 'user'
+          }
+        },
+        {
+          $unwind: '$user'
+        },
+        {
+          $addFields: {
+            userId: '$user',
+            id: { $toString: '$_id' }
+          }
+        }
+      ]);
   }
 
-  public async changeFavoriteStatus(
-    movieId: string,
-    status: boolean
-  ): Promise<DocumentType<MovieEntity> | null> {
+  public async changeFavoriteStatus(movieId: string, status: boolean)
+  : Promise<DocumentType<MovieEntity> | null> {
     return this.movieModel
-      .findByIdAndUpdate(movieId, {isFavorite: status}, {new: true})
-      .populate(['userId'])
+      .findByIdAndUpdate(movieId, {
+        '$set': {
+          isFavorite: status,
+        }
+      }, { new: true })
+      .populate('userId')
       .exec();
   }
 }

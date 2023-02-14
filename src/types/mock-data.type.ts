@@ -10,6 +10,6 @@ export type MockData = {
   emails: string[];
   avatars: string[];
   posters: string[];
-  backgroungImages: string[];
-  backgroungColors: string[];
+  backgroundImages: string[];
+  backgroundColors: string[];
 };

@@ -1,28 +1,29 @@
 import { GenreType } from '../../../types/genre-type.enum.js';
-import {IsArray, IsDateString, IsInt, Max, MaxLength, Min, MinLength, IsString, IsEnum} from 'class-validator';
+import {IsArray, IsDateString, IsInt, Max, Min, IsString, IsEnum, Length, Contains} from 'class-validator';
+import { descriptionLength, directorLength, releaseDate, titleLength } from '../movie.constant.js';
 
 
 export default class CreateMovieDto {
-  @MinLength(2, {message: 'Minimum title length must be 2'})
-  @MaxLength(100, {message: 'Maximum title length must be 100'})
+  @IsString({message: 'title is required'})
+  @Length(titleLength.MIN, titleLength.MAX, {message: 'Min length is 2, max length is 100'})
   public title!: string;
 
-  @MinLength(20, {message: 'Minimum description length must be 20'})
-  @MaxLength(1024, {message: 'Maximum description length must be 1024'})
+  @IsString({message: 'description is required'})
+  @Length(descriptionLength.MIN, descriptionLength.MAX, {message: 'Min length is 20, max length is 1024'})
   public description!: string;
 
   @IsDateString({}, {message: 'publictionDate must be valid ISO date'})
   public postDate!: Date;
 
-  @IsEnum(GenreType, {message: 'type must be GenreType'})
+  @IsEnum(GenreType, {message: 'Genre must be comedy, crime, documentary, drama, horror, family, romance, scifi or thriller' })
   public genre!: GenreType;
 
   @IsInt({message: 'releaseDate must be an integer'})
-  @Min(1895, {message: 'Minimum releaseDate is 1895'})
-  @Max(new Date().getFullYear(), {message: 'Maximum releaseDate is current year'})
+  @Min(releaseDate.MIN, {message: 'Minimum releaseDate is 1895'})
+  @Max(releaseDate.MAX, {message: 'Maximum releaseDate is current year'})
   public releaseDate!: number;
 
-  @IsString({message: 'previewVideoLink is required'})
+  @IsString({message: 'previewVideo is required'})
   public previewVideo!: string;
 
   @IsString({message: 'video is required'})
@@ -32,19 +33,22 @@ export default class CreateMovieDto {
   public actors!: string[];
 
   @IsString({message: 'director is required'})
+  @Length(directorLength.MIN, directorLength.MAX, {message: 'Min length is 2, max length is 50'})
   public director!: string;
 
   @IsInt({message: 'duration must be an integer'})
   public duration!: number;
 
   @IsString({message: 'posterImage is required'})
+  @Contains('.jpg', {message: 'posterImage field must be a link on .jpg format'})
   public posterImage!: string;
 
-  @IsString({message: 'backgroungImage is required'})
-  public backgroungImage!: string;
+  @IsString({message: 'backgroundImage is required'})
+  @Contains('.jpg', {message: 'backgroundImage field must be a link on .jpg format'})
+  public backgroundImage!: string;
 
   @IsString({message: 'backgroundColor is required'})
-  public backgroungColor!: string;
+  public backgroundColor!: string;
 
   public userId!: string;
 }

@@ -106,21 +106,21 @@
       "poster4.jpg",
       "poster5.jpg"
     ],
-    "backgroungImages": [
-      "backgroungImage.jpg",
-      "backgroungImage1.jpg",
-      "backgroungImage2.jpg",
-      "backgroungImage3.jpg",
-      "backgroungImage4.jpg",
-      "backgroungImage5.jpg"
+    "backgroundImages": [
+      "backgroundImage.jpg",
+      "backgroundImage1.jpg",
+      "backgroundImage2.jpg",
+      "backgroundImage3.jpg",
+      "backgroundImage4.jpg",
+      "backgroundImage5.jpg"
     ],
-    "backgroungColors": [
-      "backgroungColor.jpg",
-      "backgroungColor1.jpg",
-      "backgroungColor2.jpg",
-      "backgroungColor3.jpg",
-      "backgroungColor4.jpg",
-      "backgroungColor5.jpg"
+    "backgroundColors": [
+      "backgroundColor.jpg",
+      "backgroundColor1.jpg",
+      "backgroundColor2.jpg",
+      "backgroundColor3.jpg",
+      "backgroundColor4.jpg",
+      "backgroundColor5.jpg"
     ]
   }
 }

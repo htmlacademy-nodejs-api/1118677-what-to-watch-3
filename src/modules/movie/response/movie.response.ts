@@ -39,7 +39,7 @@ export default class MovieResponse {
   public duration!: number;
 
   @Expose()
-  public commentsCount!: number;
+  public commentCount!: number;
 
   @Expose({ name: 'userId'})
   @Type(() => UserResponse)
@@ -47,7 +47,4 @@ export default class MovieResponse {
 
   @Expose()
   public posterImage!: string;
-
-  @Expose()
-  public isFavorite!: boolean;
 }

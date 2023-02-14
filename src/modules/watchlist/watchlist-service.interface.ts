@@ -1,7 +1,9 @@
 import {DocumentType} from '@typegoose/typegoose';
-import {MovieEntity} from '../movie/movie.entity.js';
+import { WatchlistEntity } from './watchlist.entity.js';
 
 export interface WatchlistServiceInterface {
-  findFavorite(): Promise<DocumentType<MovieEntity>[] | null>;
-  changeFavoriteStatus(movieId: string, status: boolean): Promise<DocumentType<MovieEntity> | null>;
+  create(movieId: string, userId: string): Promise<DocumentType<WatchlistEntity>>;
+  add(movieId: string, userId: string): Promise<DocumentType<WatchlistEntity> | null>;
+  delete(movieId: string, userId: string): Promise<DocumentType<WatchlistEntity> | null>;
+  findById(movieId: string, userId: string): Promise<DocumentType<WatchlistEntity> | null>;
 }

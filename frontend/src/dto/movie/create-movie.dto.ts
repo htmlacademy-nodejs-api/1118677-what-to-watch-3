@@ -5,7 +5,7 @@ export default class CreateMovieDto {
 
   public description!: string;
 
-  public postDate!: Date;
+  public postDate!: string;
 
   public genre!: GenreType;
 

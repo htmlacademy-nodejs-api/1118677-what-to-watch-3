@@ -8,11 +8,9 @@ export default class UpdateMovieDto {
 
   public description!: string;
 
-  public postDate!: Date;
-
   public genre!: GenreType;
 
-  public releaseDate!: number;
+  public releaseDate?: number;
 
   public rating!: number;
 
@@ -35,5 +33,4 @@ export default class UpdateMovieDto {
   public backgroundColor!: string;
 
   public isFavorite!: boolean;
-  public isPromo!: boolean;
 }

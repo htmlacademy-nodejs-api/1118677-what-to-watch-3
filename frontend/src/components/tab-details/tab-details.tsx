@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { Film } from '../../types/film';
-import {formatRunTime} from '../../util';
+import {formatRunTime} from '../../utils/adapters/util';
 
 type TabDetailsProps = {
   film: Film;

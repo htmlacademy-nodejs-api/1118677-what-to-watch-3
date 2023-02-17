@@ -1,6 +1,6 @@
 import UserDto from '../user/user.dto';
 
-export default class ShortFilmDto {
+export default class ShortMovieDto {
   public id!: string;
 
   public title!: string;

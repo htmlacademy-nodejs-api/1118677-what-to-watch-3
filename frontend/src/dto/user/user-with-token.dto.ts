@@ -3,7 +3,7 @@ export default class UserWiThTokenDto {
 
   public email!: string;
 
-  public avatarUrl!: string;
+  public avatarPath!: string;
 
   public token!: string;
 }

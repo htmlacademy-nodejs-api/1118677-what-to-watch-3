@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration);
 
-const getRatingText = (rating: number) => {
+export const getRatingText = (rating: number) => {
   switch (true) {
     case rating >= 0 && rating < 3:
       return 'Bad';
@@ -17,14 +17,14 @@ const getRatingText = (rating: number) => {
   }
 };
 
-const formatRunTime = (runTime: number) => {
+export const formatRunTime = (runTime: number) => {
   const runTimeAsDuration = dayjs.duration(runTime, 'm');
   return runTime > 59
     ? runTimeAsDuration.format('H[h] mm[m]')
     : runTimeAsDuration.format('mm[m]');
 };
 
-const formatReviewDate = (date: string) => dayjs(date).format('MMMM D, YYYY');
+export const formatReviewDate = (date: string) => dayjs(date).format('MMMM D, YYYY');
 
 export const formatRemainingTime = (remainingTime: number): string => {
   const remainingTimeAsDuration = dayjs.duration(remainingTime, 'seconds');
@@ -33,6 +33,9 @@ export const formatRemainingTime = (remainingTime: number): string => {
     : remainingTimeAsDuration.format('-mm:ss');
 };
 
-const capitalize = (str: string) => str[0].toUpperCase() + str.slice(1);
+export const capitalize = (str: string) => str[0].toUpperCase() + str.slice(1);
 
-export { getRatingText, formatRunTime, formatReviewDate, capitalize };
+export const getTime = () => {
+  const now = new Date();
+  return now.toISOString();
+};

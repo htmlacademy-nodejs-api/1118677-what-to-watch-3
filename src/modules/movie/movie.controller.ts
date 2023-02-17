@@ -104,7 +104,7 @@ export default class MovieController extends Controller {
         new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'image'),
       ]
     });
-    this.addRoute({path: '/:genreId/genres', method: HttpMethod.Get, handler: this.findByGenre,
+    this.addRoute({path: '/genres/:genreId', method: HttpMethod.Get, handler: this.findByGenre,
     });
     this.addRoute({path: '/:movieId/comments', method: HttpMethod.Get, handler: this.getComments,
       middlewares: [

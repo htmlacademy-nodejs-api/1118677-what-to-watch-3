@@ -1,5 +1,4 @@
 export default class UserDto {
-  // public id!: string;
 
   public email!: string ;
 

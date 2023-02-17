@@ -6,5 +6,4 @@ export default class CreateCommentDto {
   public movieId!: string;
 
   public postDate!: string;
-  // public userId!: string;
 }

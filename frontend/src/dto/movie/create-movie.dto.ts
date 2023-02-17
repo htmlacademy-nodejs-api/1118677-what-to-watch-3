@@ -27,5 +27,4 @@ export default class CreateMovieDto {
 
   public backgroundColor!: string;
 
-  // public userId!: string;
 }

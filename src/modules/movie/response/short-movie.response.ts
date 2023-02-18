@@ -3,6 +3,9 @@ import UserResponse from '../../user/response/user.response.js';
 
 export default class ShortFilmResponse {
   @Expose()
+  public id!: string;
+
+  @Expose()
   public title!: string;
 
   @Expose()
@@ -23,4 +26,7 @@ export default class ShortFilmResponse {
 
   @Expose()
   public posterImage!: string;
+
+  @Expose()
+  public isFavorite!: boolean;
 }

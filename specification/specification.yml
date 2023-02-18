@@ -239,73 +239,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/movie"
 
-  /movies/watchlist:
-    get:
-      tags:
-        - watchlist
-      summary: Получить список фильмов «К просмотру».
-      description: Возвращает массив фильмов «К просмотру».
-
-      parameters:
-        - name: count
-          in: query
-          description: Кол-во фильмов.
-          required: false
-          schema:
-            type: number
-            example: 100
-
-      responses:
-        "200":
-          description: Список фильмов «К просмотру». Массив с объектами фильмов.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  allOf:
-                   - $ref: "#/components/schemas/movie"
-                   - type: object
-        "401":
-          description: Пользователь не авторизован.
-
-  /movies/watchlist/{movieId}:
-    post:
-      tags:
-        - watchlist
-      summary: Добавляет фильм в список «К просмотру»
-      description: Добавляет фильм в список «К просмотру» по идентификатору фильма.
-
-      parameters:
-        - name: movieId
-          in: path
-          description: Уникальный идентификатор фильма
-          required: true
-          schema:
-            type: string
-            example: 633041890aa1e923453c2957
-
-        - name: action
-          in: query
-          description: 1 - add / 0 - remove
-          required: true
-          schema:
-            type: number
-            example: 1
-
-      responses:
-        "200":
-          description: Фильм добавлен в список. Объект фильма.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/movie"
-        "400":
-          description: Ошибка запроса.
-        "401":
-          description: Пользователь не авторизован.
-
   /movies/{movieId}/comments:
     post:
       tags:
@@ -368,6 +301,73 @@ paths:
                    - type: object
         "404":
           description: Фильм не найден.
+
+  /watchlist:
+    get:
+      tags:
+        - watchlist
+      summary: Получить список фильмов «К просмотру».
+      description: Возвращает массив фильмов «К просмотру».
+
+      parameters:
+        - name: count
+          in: query
+          description: Кол-во фильмов.
+          required: false
+          schema:
+            type: number
+            example: 100
+
+      responses:
+        "200":
+          description: Список фильмов «К просмотру». Массив с объектами фильмов.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  allOf:
+                   - $ref: "#/components/schemas/movie"
+                   - type: object
+        "401":
+          description: Пользователь не авторизован.
+
+  /watchlist/{movieId}:
+    post:
+      tags:
+        - watchlist
+      summary: Добавляет фильм в список «К просмотру»
+      description: Добавляет фильм в список «К просмотру» по идентификатору фильма.
+
+      parameters:
+        - name: movieId
+          in: path
+          description: Уникальный идентификатор фильма
+          required: true
+          schema:
+            type: string
+            example: 633041890aa1e923453c2957
+
+        - name: action
+          in: query
+          description: 1 - add / 0 - remove
+          required: true
+          schema:
+            type: number
+            example: 1
+
+      responses:
+        "200":
+          description: Фильм добавлен в список. Объект фильма.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/movie"
+        "400":
+          description: Ошибка запроса.
+        "401":
+          description: Пользователь не авторизован.
 
 
 components:

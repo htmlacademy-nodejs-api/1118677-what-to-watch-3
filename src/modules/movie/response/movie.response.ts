@@ -47,4 +47,7 @@ export default class MovieResponse {
 
   @Expose()
   public posterImage!: string;
+
+  @Expose()
+  public isFavorite!: boolean;
 }

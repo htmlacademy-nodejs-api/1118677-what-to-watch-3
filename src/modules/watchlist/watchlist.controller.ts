@@ -18,6 +18,7 @@ import { StatusCodes } from 'http-status-codes';
 import { WatchlistServiceInterface } from './watchlist-service.interface.js';
 import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
 import ShortFilmResponse from '../movie/response/short-movie.response.js';
+import { MOVIE_ID } from '../movie/movie.constant.js';
 
 type ParamsGetMovie = {
   movieId: string;
@@ -50,9 +51,9 @@ export default class WatchlistController extends Controller {
       handler: this.update,
       middlewares: [
         new PrivateRouteMiddleware(),
-        new ValidateObjectIdMiddleware('movieId'),
+        new ValidateObjectIdMiddleware(MOVIE_ID),
         new ValidateDtoMiddleware(ChangeFavoriteStatusDto),
-        new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId'),
+        new DocumentExistsMiddleware(this.movieService, 'Movie', MOVIE_ID),
       ]
     });
   }

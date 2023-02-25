@@ -1,21 +1,23 @@
 export const DEFAULT_MOVIE_COUNT = 60;
+export const MOVIE_ID = 'movieId';
+export const IMAGE = 'image';
 
-export const titleLength = {
-  MIN: 2,
-  MAX: 100,
-};
+export const TitleLength = {
+  Min: 2,
+  Max: 100,
+} as const;
 
-export const descriptionLength = {
-  MIN: 20,
-  MAX: 1024,
-};
+export const DescriptionLength = {
+  Min: 20,
+  Max: 1024,
+} as const;
 
-export const releaseDate = {
-  MIN: 1895,
-  MAX: new Date().getFullYear(),
-};
+export const ReleaseDate = {
+  Min: 1895,
+  Max: new Date().getFullYear(),
+} as const;
 
-export const directorLength = {
-  MIN: 2,
-  MAX: 50,
-};
+export const DirectorLength = {
+  Min: 2,
+  Max: 50,
+} as const;

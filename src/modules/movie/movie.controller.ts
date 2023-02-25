@@ -26,6 +26,7 @@ import UploadBackgroundImageResponse from './response/upload-background-image.re
 import { StatusCodes } from 'http-status-codes';
 import HttpError from '../../common/errors/http-error.js';
 import { GenreType } from '../../types/genre-type.enum.js';
+import { IMAGE, MOVIE_ID } from './movie.constant.js';
 
 type ParamsGetMovie = {
   movieId: string;
@@ -56,22 +57,22 @@ export default class MovieController extends Controller {
 
     this.addRoute({path: '/:movieId', method: HttpMethod.Get, handler: this.show,
       middlewares: [
-        new ValidateObjectIdMiddleware('movieId'),
-        new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId'),
+        new ValidateObjectIdMiddleware(MOVIE_ID),
+        new DocumentExistsMiddleware(this.movieService, 'Movie', MOVIE_ID),
       ]
     });
     this.addRoute({path: '/:movieId', method: HttpMethod.Delete, handler: this.delete,
       middlewares: [
         new PrivateRouteMiddleware(),
-        new ValidateObjectIdMiddleware('movieId'),
-        new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId'),
+        new ValidateObjectIdMiddleware(MOVIE_ID),
+        new DocumentExistsMiddleware(this.movieService, 'Movie', MOVIE_ID),
       ]});
     this.addRoute({path: '/:movieId', method: HttpMethod.Patch, handler: this.update,
       middlewares: [
         new PrivateRouteMiddleware(),
-        new ValidateObjectIdMiddleware('movieId'),
+        new ValidateObjectIdMiddleware(MOVIE_ID),
         new ValidateDtoMiddleware(UpdateMovieDto),
-        new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId'),
+        new DocumentExistsMiddleware(this.movieService, 'Movie', MOVIE_ID),
       ]});
 
     this.addRoute({
@@ -80,8 +81,8 @@ export default class MovieController extends Controller {
       handler: this.uploadPreviewImage,
       middlewares: [
         new PrivateRouteMiddleware(),
-        new ValidateObjectIdMiddleware('movieId'),
-        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'image'),
+        new ValidateObjectIdMiddleware(MOVIE_ID),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), IMAGE),
       ]
     });
     this.addRoute({
@@ -90,8 +91,8 @@ export default class MovieController extends Controller {
       handler: this.uploadPosterImage,
       middlewares: [
         new PrivateRouteMiddleware(),
-        new ValidateObjectIdMiddleware('movieId'),
-        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'image'),
+        new ValidateObjectIdMiddleware(MOVIE_ID),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), IMAGE),
       ]
     });
     this.addRoute({
@@ -100,16 +101,16 @@ export default class MovieController extends Controller {
       handler: this.uploadBackgroundImage,
       middlewares: [
         new PrivateRouteMiddleware(),
-        new ValidateObjectIdMiddleware('movieId'),
-        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'image'),
+        new ValidateObjectIdMiddleware(MOVIE_ID),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), IMAGE),
       ]
     });
     this.addRoute({path: '/genres/:genreId', method: HttpMethod.Get, handler: this.findByGenre,
     });
     this.addRoute({path: '/:movieId/comments', method: HttpMethod.Get, handler: this.getComments,
       middlewares: [
-        new ValidateObjectIdMiddleware('movieId'),
-        new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId'),
+        new ValidateObjectIdMiddleware(MOVIE_ID),
+        new DocumentExistsMiddleware(this.movieService, 'Movie', MOVIE_ID),
       ]});
   }
 

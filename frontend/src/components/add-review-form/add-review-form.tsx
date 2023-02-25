@@ -3,9 +3,9 @@ import Rating from '../rating/rating';
 import { NewReview } from '../../types/new-review';
 
 const Limit = {
-  MIN: 50,
-  MAX: 300,
-};
+  Min: 50,
+  Max: 300,
+} as const;
 
 type AddReviewFormProps = {
   onSubmit: (review: NewReview) => void;
@@ -16,7 +16,7 @@ function AddReviewForm({ onSubmit }: AddReviewFormProps) {
   const [comment, setComment] = useState<string>('');
 
   const isValid =
-    rating && comment.length >= Limit.MIN && comment.length <= Limit.MAX;
+    rating && comment.length >= Limit.Min && comment.length <= Limit.Max;
 
   return (
     <div className="add-review">

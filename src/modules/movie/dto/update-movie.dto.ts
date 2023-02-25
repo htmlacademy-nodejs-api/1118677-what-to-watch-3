@@ -1,14 +1,14 @@
 import { GenreType } from '../../../types/genre-type.enum.js';
 import {IsArray, IsDateString, IsInt, Max, Min, IsString, IsEnum, IsOptional, IsBoolean, Length, Contains} from 'class-validator';
-import { descriptionLength, directorLength, releaseDate, titleLength } from '../movie.constant.js';
+import { DescriptionLength, DirectorLength, ReleaseDate, TitleLength } from '../movie.constant.js';
 
 export default class UpdateMovieDto {
   @IsOptional()
-  @Length(titleLength.MIN, titleLength.MAX, {message: 'Min length is 2, max length is 100'})
+  @Length(TitleLength.Min, TitleLength.Max, {message: 'Min length is 2, max length is 100'})
   public title?: string;
 
   @IsOptional()
-  @Length(descriptionLength.MIN, descriptionLength.MAX, {message: 'Min length is 20, max length is 1024'})
+  @Length(DescriptionLength.Min, DescriptionLength.Max, {message: 'Min length is 20, max length is 1024'})
   public description?: string;
 
   @IsOptional()
@@ -21,8 +21,8 @@ export default class UpdateMovieDto {
 
   @IsOptional()
   @IsInt({message: 'releaseDate must be an integer'})
-  @Min(releaseDate.MIN, {message: 'Minimum releaseDate is 1895'})
-  @Max(releaseDate.MAX, {message: 'Maximum releaseDate is current year'})
+  @Min(ReleaseDate.Min, {message: 'Minimum releaseDate is 1895'})
+  @Max(ReleaseDate.Max, {message: 'Maximum releaseDate is current year'})
   public releaseDate?: number;
 
   @IsOptional()
@@ -39,7 +39,7 @@ export default class UpdateMovieDto {
 
   @IsOptional()
   @IsString({message: 'director is string'})
-  @Length(directorLength.MIN, directorLength.MAX, {message: 'Min length is 2, max length is 50'})
+  @Length(DirectorLength.Min, DirectorLength.Max, {message: 'Min length is 2, max length is 50'})
   public director?: string;
 
   @IsOptional()
